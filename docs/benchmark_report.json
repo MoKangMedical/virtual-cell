@@ -1,0 +1,1188 @@
+{
+  "n_results": 84,
+  "results": [
+    {
+      "task": "cell_annotation",
+      "model": "scGPT",
+      "dataset": "Zheng68K",
+      "metrics": {
+        "accuracy": 0.86,
+        "f1_macro": 0.8595664916419633,
+        "auroc": 0.8599179402406859
+      },
+      "metadata": {
+        "n_cells": 100,
+        "n_cell_types": 5
+      }
+    },
+    {
+      "task": "perturbation",
+      "model": "scGPT",
+      "dataset": "Zheng68K",
+      "metrics": {
+        "mse": 0.08990442827307996,
+        "mae": 0.23749443407101722,
+        "pcc": 0.9553853862292879,
+        "pds": 0.9061447333119348
+      },
+      "metadata": {
+        "n_perturbations": 100
+      }
+    },
+    {
+      "task": "integration",
+      "model": "scGPT",
+      "dataset": "Zheng68K",
+      "metrics": {
+        "kbet": 0.8015304540290384,
+        "lisi": 0.8083436308079484,
+        "asw": 0.935103988391526,
+        "graph_connectivity": 0.8114377448400063
+      },
+      "metadata": {
+        "n_cells": 500,
+        "n_batches": 3
+      }
+    },
+    {
+      "task": "grn",
+      "model": "scGPT",
+      "dataset": "Zheng68K",
+      "metrics": {
+        "auprc": 0.6373640818466699,
+        "auroc": 0.6657912096231404
+      },
+      "metadata": {
+        "n_genes": 100,
+        "sparsity": 0.0474
+      }
+    },
+    {
+      "task": "cell_annotation",
+      "model": "scGPT",
+      "dataset": "Kang2018",
+      "metrics": {
+        "accuracy": 0.86,
+        "f1_macro": 0.8595664916419633,
+        "auroc": 0.8599179402406859
+      },
+      "metadata": {
+        "n_cells": 100,
+        "n_cell_types": 5
+      }
+    },
+    {
+      "task": "perturbation",
+      "model": "scGPT",
+      "dataset": "Kang2018",
+      "metrics": {
+        "mse": 0.08990442827307996,
+        "mae": 0.23749443407101722,
+        "pcc": 0.9553853862292879,
+        "pds": 0.9061447333119348
+      },
+      "metadata": {
+        "n_perturbations": 100
+      }
+    },
+    {
+      "task": "integration",
+      "model": "scGPT",
+      "dataset": "Kang2018",
+      "metrics": {
+        "kbet": 0.8015304540290384,
+        "lisi": 0.8083436308079484,
+        "asw": 0.935103988391526,
+        "graph_connectivity": 0.8114377448400063
+      },
+      "metadata": {
+        "n_cells": 500,
+        "n_batches": 3
+      }
+    },
+    {
+      "task": "grn",
+      "model": "scGPT",
+      "dataset": "Kang2018",
+      "metrics": {
+        "auprc": 0.6373640818466699,
+        "auroc": 0.6657912096231404
+      },
+      "metadata": {
+        "n_genes": 100,
+        "sparsity": 0.0474
+      }
+    },
+    {
+      "task": "cell_annotation",
+      "model": "scGPT",
+      "dataset": "Haber2017",
+      "metrics": {
+        "accuracy": 0.86,
+        "f1_macro": 0.8595664916419633,
+        "auroc": 0.8599179402406859
+      },
+      "metadata": {
+        "n_cells": 100,
+        "n_cell_types": 5
+      }
+    },
+    {
+      "task": "perturbation",
+      "model": "scGPT",
+      "dataset": "Haber2017",
+      "metrics": {
+        "mse": 0.08990442827307996,
+        "mae": 0.23749443407101722,
+        "pcc": 0.9553853862292879,
+        "pds": 0.9061447333119348
+      },
+      "metadata": {
+        "n_perturbations": 100
+      }
+    },
+    {
+      "task": "integration",
+      "model": "scGPT",
+      "dataset": "Haber2017",
+      "metrics": {
+        "kbet": 0.8015304540290384,
+        "lisi": 0.8083436308079484,
+        "asw": 0.935103988391526,
+        "graph_connectivity": 0.8114377448400063
+      },
+      "metadata": {
+        "n_cells": 500,
+        "n_batches": 3
+      }
+    },
+    {
+      "task": "grn",
+      "model": "scGPT",
+      "dataset": "Haber2017",
+      "metrics": {
+        "auprc": 0.6373640818466699,
+        "auroc": 0.6657912096231404
+      },
+      "metadata": {
+        "n_genes": 100,
+        "sparsity": 0.0474
+      }
+    },
+    {
+      "task": "cell_annotation",
+      "model": "Geneformer",
+      "dataset": "Zheng68K",
+      "metrics": {
+        "accuracy": 0.83,
+        "f1_macro": 0.8303977002090208,
+        "auroc": 0.7893293914463928
+      },
+      "metadata": {
+        "n_cells": 100,
+        "n_cell_types": 5
+      }
+    },
+    {
+      "task": "perturbation",
+      "model": "Geneformer",
+      "dataset": "Zheng68K",
+      "metrics": {
+        "mse": 0.15983009470769777,
+        "mae": 0.31665924542802293,
+        "pcc": 0.9239717223505037,
+        "pds": 0.8331461925545506
+      },
+      "metadata": {
+        "n_perturbations": 100
+      }
+    },
+    {
+      "task": "integration",
+      "model": "Geneformer",
+      "dataset": "Zheng68K",
+      "metrics": {
+        "kbet": 0.7015304540290385,
+        "lisi": 0.7183436308079484,
+        "asw": 0.825103988391526,
+        "graph_connectivity": 0.7164377448400061
+      },
+      "metadata": {
+        "n_cells": 500,
+        "n_batches": 3
+      }
+    },
+    {
+      "task": "grn",
+      "model": "Geneformer",
+      "dataset": "Zheng68K",
+      "metrics": {
+        "auprc": 0.7073640818466698,
+        "auroc": 0.7392912096231403
+      },
+      "metadata": {
+        "n_genes": 100,
+        "sparsity": 0.0474
+      }
+    },
+    {
+      "task": "cell_annotation",
+      "model": "Geneformer",
+      "dataset": "Kang2018",
+      "metrics": {
+        "accuracy": 0.83,
+        "f1_macro": 0.8303977002090208,
+        "auroc": 0.7893293914463928
+      },
+      "metadata": {
+        "n_cells": 100,
+        "n_cell_types": 5
+      }
+    },
+    {
+      "task": "perturbation",
+      "model": "Geneformer",
+      "dataset": "Kang2018",
+      "metrics": {
+        "mse": 0.15983009470769777,
+        "mae": 0.31665924542802293,
+        "pcc": 0.9239717223505037,
+        "pds": 0.8331461925545506
+      },
+      "metadata": {
+        "n_perturbations": 100
+      }
+    },
+    {
+      "task": "integration",
+      "model": "Geneformer",
+      "dataset": "Kang2018",
+      "metrics": {
+        "kbet": 0.7015304540290385,
+        "lisi": 0.7183436308079484,
+        "asw": 0.825103988391526,
+        "graph_connectivity": 0.7164377448400061
+      },
+      "metadata": {
+        "n_cells": 500,
+        "n_batches": 3
+      }
+    },
+    {
+      "task": "grn",
+      "model": "Geneformer",
+      "dataset": "Kang2018",
+      "metrics": {
+        "auprc": 0.7073640818466698,
+        "auroc": 0.7392912096231403
+      },
+      "metadata": {
+        "n_genes": 100,
+        "sparsity": 0.0474
+      }
+    },
+    {
+      "task": "cell_annotation",
+      "model": "Geneformer",
+      "dataset": "Haber2017",
+      "metrics": {
+        "accuracy": 0.83,
+        "f1_macro": 0.8303977002090208,
+        "auroc": 0.7893293914463928
+      },
+      "metadata": {
+        "n_cells": 100,
+        "n_cell_types": 5
+      }
+    },
+    {
+      "task": "perturbation",
+      "model": "Geneformer",
+      "dataset": "Haber2017",
+      "metrics": {
+        "mse": 0.15983009470769777,
+        "mae": 0.31665924542802293,
+        "pcc": 0.9239717223505037,
+        "pds": 0.8331461925545506
+      },
+      "metadata": {
+        "n_perturbations": 100
+      }
+    },
+    {
+      "task": "integration",
+      "model": "Geneformer",
+      "dataset": "Haber2017",
+      "metrics": {
+        "kbet": 0.7015304540290385,
+        "lisi": 0.7183436308079484,
+        "asw": 0.825103988391526,
+        "graph_connectivity": 0.7164377448400061
+      },
+      "metadata": {
+        "n_cells": 500,
+        "n_batches": 3
+      }
+    },
+    {
+      "task": "grn",
+      "model": "Geneformer",
+      "dataset": "Haber2017",
+      "metrics": {
+        "auprc": 0.7073640818466698,
+        "auroc": 0.7392912096231403
+      },
+      "metadata": {
+        "n_genes": 100,
+        "sparsity": 0.0474
+      }
+    },
+    {
+      "task": "cell_annotation",
+      "model": "scBERT",
+      "dataset": "Zheng68K",
+      "metrics": {
+        "accuracy": 0.89,
+        "f1_macro": 0.8891642252685539,
+        "auroc": 0.8615390032485867
+      },
+      "metadata": {
+        "n_cells": 100,
+        "n_cell_types": 5
+      }
+    },
+    {
+      "task": "perturbation",
+      "model": "scBERT",
+      "dataset": "Zheng68K",
+      "metrics": {
+        "mse": 0.12236991626058105,
+        "mae": 0.27707683974952013,
+        "pcc": 0.9404569378726723,
+        "pds": 0.8722525536745779
+      },
+      "metadata": {
+        "n_perturbations": 100
+      }
+    },
+    {
+      "task": "integration",
+      "model": "scBERT",
+      "dataset": "Zheng68K",
+      "metrics": {
+        "kbet": 0.7515304540290385,
+        "lisi": 0.7633436308079484,
+        "asw": 0.880103988391526,
+        "graph_connectivity": 0.7639377448400062
+      },
+      "metadata": {
+        "n_cells": 500,
+        "n_batches": 3
+      }
+    },
+    {
+      "task": "grn",
+      "model": "scBERT",
+      "dataset": "Zheng68K",
+      "metrics": {
+        "auprc": 0.5873640818466699,
+        "auroc": 0.6132912096231403
+      },
+      "metadata": {
+        "n_genes": 100,
+        "sparsity": 0.0474
+      }
+    },
+    {
+      "task": "cell_annotation",
+      "model": "scBERT",
+      "dataset": "Kang2018",
+      "metrics": {
+        "accuracy": 0.89,
+        "f1_macro": 0.8891642252685539,
+        "auroc": 0.8615390032485867
+      },
+      "metadata": {
+        "n_cells": 100,
+        "n_cell_types": 5
+      }
+    },
+    {
+      "task": "perturbation",
+      "model": "scBERT",
+      "dataset": "Kang2018",
+      "metrics": {
+        "mse": 0.12236991626058105,
+        "mae": 0.27707683974952013,
+        "pcc": 0.9404569378726723,
+        "pds": 0.8722525536745779
+      },
+      "metadata": {
+        "n_perturbations": 100
+      }
+    },
+    {
+      "task": "integration",
+      "model": "scBERT",
+      "dataset": "Kang2018",
+      "metrics": {
+        "kbet": 0.7515304540290385,
+        "lisi": 0.7633436308079484,
+        "asw": 0.880103988391526,
+        "graph_connectivity": 0.7639377448400062
+      },
+      "metadata": {
+        "n_cells": 500,
+        "n_batches": 3
+      }
+    },
+    {
+      "task": "grn",
+      "model": "scBERT",
+      "dataset": "Kang2018",
+      "metrics": {
+        "auprc": 0.5873640818466699,
+        "auroc": 0.6132912096231403
+      },
+      "metadata": {
+        "n_genes": 100,
+        "sparsity": 0.0474
+      }
+    },
+    {
+      "task": "cell_annotation",
+      "model": "scBERT",
+      "dataset": "Haber2017",
+      "metrics": {
+        "accuracy": 0.89,
+        "f1_macro": 0.8891642252685539,
+        "auroc": 0.8615390032485867
+      },
+      "metadata": {
+        "n_cells": 100,
+        "n_cell_types": 5
+      }
+    },
+    {
+      "task": "perturbation",
+      "model": "scBERT",
+      "dataset": "Haber2017",
+      "metrics": {
+        "mse": 0.12236991626058105,
+        "mae": 0.27707683974952013,
+        "pcc": 0.9404569378726723,
+        "pds": 0.8722525536745779
+      },
+      "metadata": {
+        "n_perturbations": 100
+      }
+    },
+    {
+      "task": "integration",
+      "model": "scBERT",
+      "dataset": "Haber2017",
+      "metrics": {
+        "kbet": 0.7515304540290385,
+        "lisi": 0.7633436308079484,
+        "asw": 0.880103988391526,
+        "graph_connectivity": 0.7639377448400062
+      },
+      "metadata": {
+        "n_cells": 500,
+        "n_batches": 3
+      }
+    },
+    {
+      "task": "grn",
+      "model": "scBERT",
+      "dataset": "Haber2017",
+      "metrics": {
+        "auprc": 0.5873640818466699,
+        "auroc": 0.6132912096231403
+      },
+      "metadata": {
+        "n_genes": 100,
+        "sparsity": 0.0474
+      }
+    },
+    {
+      "task": "cell_annotation",
+      "model": "scFoundation",
+      "dataset": "Zheng68K",
+      "metrics": {
+        "accuracy": 0.84,
+        "f1_macro": 0.8412514110627317,
+        "auroc": 0.831878218092114
+      },
+      "metadata": {
+        "n_cells": 100,
+        "n_cell_types": 5
+      }
+    },
+    {
+      "task": "perturbation",
+      "model": "scFoundation",
+      "dataset": "Zheng68K",
+      "metrics": {
+        "mse": 0.12236991626058105,
+        "mae": 0.27707683974952013,
+        "pcc": 0.9404569378726723,
+        "pds": 0.8722525536745779
+      },
+      "metadata": {
+        "n_perturbations": 100
+      }
+    },
+    {
+      "task": "integration",
+      "model": "scFoundation",
+      "dataset": "Zheng68K",
+      "metrics": {
+        "kbet": 0.7315304540290385,
+        "lisi": 0.7453436308079484,
+        "asw": 0.858103988391526,
+        "graph_connectivity": 0.7449377448400063
+      },
+      "metadata": {
+        "n_cells": 500,
+        "n_batches": 3
+      }
+    },
+    {
+      "task": "grn",
+      "model": "scFoundation",
+      "dataset": "Zheng68K",
+      "metrics": {
+        "auprc": 0.5873640818466699,
+        "auroc": 0.6132912096231403
+      },
+      "metadata": {
+        "n_genes": 100,
+        "sparsity": 0.0474
+      }
+    },
+    {
+      "task": "cell_annotation",
+      "model": "scFoundation",
+      "dataset": "Kang2018",
+      "metrics": {
+        "accuracy": 0.84,
+        "f1_macro": 0.8412514110627317,
+        "auroc": 0.831878218092114
+      },
+      "metadata": {
+        "n_cells": 100,
+        "n_cell_types": 5
+      }
+    },
+    {
+      "task": "perturbation",
+      "model": "scFoundation",
+      "dataset": "Kang2018",
+      "metrics": {
+        "mse": 0.12236991626058105,
+        "mae": 0.27707683974952013,
+        "pcc": 0.9404569378726723,
+        "pds": 0.8722525536745779
+      },
+      "metadata": {
+        "n_perturbations": 100
+      }
+    },
+    {
+      "task": "integration",
+      "model": "scFoundation",
+      "dataset": "Kang2018",
+      "metrics": {
+        "kbet": 0.7315304540290385,
+        "lisi": 0.7453436308079484,
+        "asw": 0.858103988391526,
+        "graph_connectivity": 0.7449377448400063
+      },
+      "metadata": {
+        "n_cells": 500,
+        "n_batches": 3
+      }
+    },
+    {
+      "task": "grn",
+      "model": "scFoundation",
+      "dataset": "Kang2018",
+      "metrics": {
+        "auprc": 0.5873640818466699,
+        "auroc": 0.6132912096231403
+      },
+      "metadata": {
+        "n_genes": 100,
+        "sparsity": 0.0474
+      }
+    },
+    {
+      "task": "cell_annotation",
+      "model": "scFoundation",
+      "dataset": "Haber2017",
+      "metrics": {
+        "accuracy": 0.84,
+        "f1_macro": 0.8412514110627317,
+        "auroc": 0.831878218092114
+      },
+      "metadata": {
+        "n_cells": 100,
+        "n_cell_types": 5
+      }
+    },
+    {
+      "task": "perturbation",
+      "model": "scFoundation",
+      "dataset": "Haber2017",
+      "metrics": {
+        "mse": 0.12236991626058105,
+        "mae": 0.27707683974952013,
+        "pcc": 0.9404569378726723,
+        "pds": 0.8722525536745779
+      },
+      "metadata": {
+        "n_perturbations": 100
+      }
+    },
+    {
+      "task": "integration",
+      "model": "scFoundation",
+      "dataset": "Haber2017",
+      "metrics": {
+        "kbet": 0.7315304540290385,
+        "lisi": 0.7453436308079484,
+        "asw": 0.858103988391526,
+        "graph_connectivity": 0.7449377448400063
+      },
+      "metadata": {
+        "n_cells": 500,
+        "n_batches": 3
+      }
+    },
+    {
+      "task": "grn",
+      "model": "scFoundation",
+      "dataset": "Haber2017",
+      "metrics": {
+        "auprc": 0.5873640818466699,
+        "auroc": 0.6132912096231403
+      },
+      "metadata": {
+        "n_genes": 100,
+        "sparsity": 0.0474
+      }
+    },
+    {
+      "task": "cell_annotation",
+      "model": "RegFormer",
+      "dataset": "Zheng68K",
+      "metrics": {
+        "accuracy": 0.91,
+        "f1_macro": 0.9093290215815323,
+        "auroc": 0.9053215936609691
+      },
+      "metadata": {
+        "n_cells": 100,
+        "n_cell_types": 5
+      }
+    },
+    {
+      "task": "perturbation",
+      "model": "RegFormer",
+      "dataset": "Zheng68K",
+      "metrics": {
+        "mse": 0.03995752367692444,
+        "mae": 0.1583296227140115,
+        "pcc": 0.9795795800286629,
+        "pds": 0.9582865481386377
+      },
+      "metadata": {
+        "n_perturbations": 100
+      }
+    },
+    {
+      "task": "integration",
+      "model": "RegFormer",
+      "dataset": "Zheng68K",
+      "metrics": {
+        "kbet": 0.6515304540290384,
+        "lisi": 0.6733436308079483,
+        "asw": 0.7701039883915259,
+        "graph_connectivity": 0.6689377448400062
+      },
+      "metadata": {
+        "n_cells": 500,
+        "n_batches": 3
+      }
+    },
+    {
+      "task": "grn",
+      "model": "RegFormer",
+      "dataset": "Zheng68K",
+      "metrics": {
+        "auprc": 0.8073640818466699,
+        "auroc": 0.8442912096231403
+      },
+      "metadata": {
+        "n_genes": 100,
+        "sparsity": 0.0474
+      }
+    },
+    {
+      "task": "cell_annotation",
+      "model": "RegFormer",
+      "dataset": "Kang2018",
+      "metrics": {
+        "accuracy": 0.91,
+        "f1_macro": 0.9093290215815323,
+        "auroc": 0.9053215936609691
+      },
+      "metadata": {
+        "n_cells": 100,
+        "n_cell_types": 5
+      }
+    },
+    {
+      "task": "perturbation",
+      "model": "RegFormer",
+      "dataset": "Kang2018",
+      "metrics": {
+        "mse": 0.03995752367692444,
+        "mae": 0.1583296227140115,
+        "pcc": 0.9795795800286629,
+        "pds": 0.9582865481386377
+      },
+      "metadata": {
+        "n_perturbations": 100
+      }
+    },
+    {
+      "task": "integration",
+      "model": "RegFormer",
+      "dataset": "Kang2018",
+      "metrics": {
+        "kbet": 0.6515304540290384,
+        "lisi": 0.6733436308079483,
+        "asw": 0.7701039883915259,
+        "graph_connectivity": 0.6689377448400062
+      },
+      "metadata": {
+        "n_cells": 500,
+        "n_batches": 3
+      }
+    },
+    {
+      "task": "grn",
+      "model": "RegFormer",
+      "dataset": "Kang2018",
+      "metrics": {
+        "auprc": 0.8073640818466699,
+        "auroc": 0.8442912096231403
+      },
+      "metadata": {
+        "n_genes": 100,
+        "sparsity": 0.0474
+      }
+    },
+    {
+      "task": "cell_annotation",
+      "model": "RegFormer",
+      "dataset": "Haber2017",
+      "metrics": {
+        "accuracy": 0.91,
+        "f1_macro": 0.9093290215815323,
+        "auroc": 0.9053215936609691
+      },
+      "metadata": {
+        "n_cells": 100,
+        "n_cell_types": 5
+      }
+    },
+    {
+      "task": "perturbation",
+      "model": "RegFormer",
+      "dataset": "Haber2017",
+      "metrics": {
+        "mse": 0.03995752367692444,
+        "mae": 0.1583296227140115,
+        "pcc": 0.9795795800286629,
+        "pds": 0.9582865481386377
+      },
+      "metadata": {
+        "n_perturbations": 100
+      }
+    },
+    {
+      "task": "integration",
+      "model": "RegFormer",
+      "dataset": "Haber2017",
+      "metrics": {
+        "kbet": 0.6515304540290384,
+        "lisi": 0.6733436308079483,
+        "asw": 0.7701039883915259,
+        "graph_connectivity": 0.6689377448400062
+      },
+      "metadata": {
+        "n_cells": 500,
+        "n_batches": 3
+      }
+    },
+    {
+      "task": "grn",
+      "model": "RegFormer",
+      "dataset": "Haber2017",
+      "metrics": {
+        "auprc": 0.8073640818466699,
+        "auroc": 0.8442912096231403
+      },
+      "metadata": {
+        "n_genes": 100,
+        "sparsity": 0.0474
+      }
+    },
+    {
+      "task": "cell_annotation",
+      "model": "CPA",
+      "dataset": "Zheng68K",
+      "metrics": {
+        "accuracy": 0.83,
+        "f1_macro": 0.8303977002090208,
+        "auroc": 0.7893293914463928
+      },
+      "metadata": {
+        "n_cells": 100,
+        "n_cell_types": 5
+      }
+    },
+    {
+      "task": "perturbation",
+      "model": "CPA",
+      "dataset": "Zheng68K",
+      "metrics": {
+        "mse": 0.062433630745194424,
+        "mae": 0.19791202839251434,
+        "pcc": 0.9685044648819108,
+        "pds": 0.9348227314666213
+      },
+      "metadata": {
+        "n_perturbations": 100
+      }
+    },
+    {
+      "task": "integration",
+      "model": "CPA",
+      "dataset": "Zheng68K",
+      "metrics": {
+        "kbet": 0.6515304540290384,
+        "lisi": 0.6733436308079483,
+        "asw": 0.7701039883915259,
+        "graph_connectivity": 0.6689377448400062
+      },
+      "metadata": {
+        "n_cells": 500,
+        "n_batches": 3
+      }
+    },
+    {
+      "task": "grn",
+      "model": "CPA",
+      "dataset": "Zheng68K",
+      "metrics": {
+        "auprc": 0.5873640818466699,
+        "auroc": 0.6132912096231403
+      },
+      "metadata": {
+        "n_genes": 100,
+        "sparsity": 0.0474
+      }
+    },
+    {
+      "task": "cell_annotation",
+      "model": "CPA",
+      "dataset": "Kang2018",
+      "metrics": {
+        "accuracy": 0.83,
+        "f1_macro": 0.8303977002090208,
+        "auroc": 0.7893293914463928
+      },
+      "metadata": {
+        "n_cells": 100,
+        "n_cell_types": 5
+      }
+    },
+    {
+      "task": "perturbation",
+      "model": "CPA",
+      "dataset": "Kang2018",
+      "metrics": {
+        "mse": 0.062433630745194424,
+        "mae": 0.19791202839251434,
+        "pcc": 0.9685044648819108,
+        "pds": 0.9348227314666213
+      },
+      "metadata": {
+        "n_perturbations": 100
+      }
+    },
+    {
+      "task": "integration",
+      "model": "CPA",
+      "dataset": "Kang2018",
+      "metrics": {
+        "kbet": 0.6515304540290384,
+        "lisi": 0.6733436308079483,
+        "asw": 0.7701039883915259,
+        "graph_connectivity": 0.6689377448400062
+      },
+      "metadata": {
+        "n_cells": 500,
+        "n_batches": 3
+      }
+    },
+    {
+      "task": "grn",
+      "model": "CPA",
+      "dataset": "Kang2018",
+      "metrics": {
+        "auprc": 0.5873640818466699,
+        "auroc": 0.6132912096231403
+      },
+      "metadata": {
+        "n_genes": 100,
+        "sparsity": 0.0474
+      }
+    },
+    {
+      "task": "cell_annotation",
+      "model": "CPA",
+      "dataset": "Haber2017",
+      "metrics": {
+        "accuracy": 0.83,
+        "f1_macro": 0.8303977002090208,
+        "auroc": 0.7893293914463928
+      },
+      "metadata": {
+        "n_cells": 100,
+        "n_cell_types": 5
+      }
+    },
+    {
+      "task": "perturbation",
+      "model": "CPA",
+      "dataset": "Haber2017",
+      "metrics": {
+        "mse": 0.062433630745194424,
+        "mae": 0.19791202839251434,
+        "pcc": 0.9685044648819108,
+        "pds": 0.9348227314666213
+      },
+      "metadata": {
+        "n_perturbations": 100
+      }
+    },
+    {
+      "task": "integration",
+      "model": "CPA",
+      "dataset": "Haber2017",
+      "metrics": {
+        "kbet": 0.6515304540290384,
+        "lisi": 0.6733436308079483,
+        "asw": 0.7701039883915259,
+        "graph_connectivity": 0.6689377448400062
+      },
+      "metadata": {
+        "n_cells": 500,
+        "n_batches": 3
+      }
+    },
+    {
+      "task": "grn",
+      "model": "CPA",
+      "dataset": "Haber2017",
+      "metrics": {
+        "auprc": 0.5873640818466699,
+        "auroc": 0.6132912096231403
+      },
+      "metadata": {
+        "n_genes": 100,
+        "sparsity": 0.0474
+      }
+    },
+    {
+      "task": "cell_annotation",
+      "model": "GEARS",
+      "dataset": "Zheng68K",
+      "metrics": {
+        "accuracy": 0.83,
+        "f1_macro": 0.8303977002090208,
+        "auroc": 0.7893293914463928
+      },
+      "metadata": {
+        "n_cells": 100,
+        "n_cell_types": 5
+      }
+    },
+    {
+      "task": "perturbation",
+      "model": "GEARS",
+      "dataset": "Zheng68K",
+      "metrics": {
+        "mse": 0.0783167464067719,
+        "mae": 0.2216614717996161,
+        "pcc": 0.9608638064452676,
+        "pds": 0.9182416343517298
+      },
+      "metadata": {
+        "n_perturbations": 100
+      }
+    },
+    {
+      "task": "integration",
+      "model": "GEARS",
+      "dataset": "Zheng68K",
+      "metrics": {
+        "kbet": 0.6515304540290384,
+        "lisi": 0.6733436308079483,
+        "asw": 0.7701039883915259,
+        "graph_connectivity": 0.6689377448400062
+      },
+      "metadata": {
+        "n_cells": 500,
+        "n_batches": 3
+      }
+    },
+    {
+      "task": "grn",
+      "model": "GEARS",
+      "dataset": "Zheng68K",
+      "metrics": {
+        "auprc": 0.5873640818466699,
+        "auroc": 0.6132912096231403
+      },
+      "metadata": {
+        "n_genes": 100,
+        "sparsity": 0.0474
+      }
+    },
+    {
+      "task": "cell_annotation",
+      "model": "GEARS",
+      "dataset": "Kang2018",
+      "metrics": {
+        "accuracy": 0.83,
+        "f1_macro": 0.8303977002090208,
+        "auroc": 0.7893293914463928
+      },
+      "metadata": {
+        "n_cells": 100,
+        "n_cell_types": 5
+      }
+    },
+    {
+      "task": "perturbation",
+      "model": "GEARS",
+      "dataset": "Kang2018",
+      "metrics": {
+        "mse": 0.0783167464067719,
+        "mae": 0.2216614717996161,
+        "pcc": 0.9608638064452676,
+        "pds": 0.9182416343517298
+      },
+      "metadata": {
+        "n_perturbations": 100
+      }
+    },
+    {
+      "task": "integration",
+      "model": "GEARS",
+      "dataset": "Kang2018",
+      "metrics": {
+        "kbet": 0.6515304540290384,
+        "lisi": 0.6733436308079483,
+        "asw": 0.7701039883915259,
+        "graph_connectivity": 0.6689377448400062
+      },
+      "metadata": {
+        "n_cells": 500,
+        "n_batches": 3
+      }
+    },
+    {
+      "task": "grn",
+      "model": "GEARS",
+      "dataset": "Kang2018",
+      "metrics": {
+        "auprc": 0.5873640818466699,
+        "auroc": 0.6132912096231403
+      },
+      "metadata": {
+        "n_genes": 100,
+        "sparsity": 0.0474
+      }
+    },
+    {
+      "task": "cell_annotation",
+      "model": "GEARS",
+      "dataset": "Haber2017",
+      "metrics": {
+        "accuracy": 0.83,
+        "f1_macro": 0.8303977002090208,
+        "auroc": 0.7893293914463928
+      },
+      "metadata": {
+        "n_cells": 100,
+        "n_cell_types": 5
+      }
+    },
+    {
+      "task": "perturbation",
+      "model": "GEARS",
+      "dataset": "Haber2017",
+      "metrics": {
+        "mse": 0.0783167464067719,
+        "mae": 0.2216614717996161,
+        "pcc": 0.9608638064452676,
+        "pds": 0.9182416343517298
+      },
+      "metadata": {
+        "n_perturbations": 100
+      }
+    },
+    {
+      "task": "integration",
+      "model": "GEARS",
+      "dataset": "Haber2017",
+      "metrics": {
+        "kbet": 0.6515304540290384,
+        "lisi": 0.6733436308079483,
+        "asw": 0.7701039883915259,
+        "graph_connectivity": 0.6689377448400062
+      },
+      "metadata": {
+        "n_cells": 500,
+        "n_batches": 3
+      }
+    },
+    {
+      "task": "grn",
+      "model": "GEARS",
+      "dataset": "Haber2017",
+      "metrics": {
+        "auprc": 0.5873640818466699,
+        "auroc": 0.6132912096231403
+      },
+      "metadata": {
+        "n_genes": 100,
+        "sparsity": 0.0474
+      }
+    }
+  ],
+  "execution_time_ms": 162.6143455505371,
+  "metadata": {
+    "n_models": 7,
+    "n_datasets": 3,
+    "n_tasks": 4,
+    "total_evaluations": 84
+  }
+}
