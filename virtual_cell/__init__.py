@@ -10,24 +10,20 @@ __author__ = "MoKangMedical"
 from .benchmark import Benchmark, BenchmarkResult
 from .models.base import BaseModel, ModelInfo
 from .datasets.base import BaseDataset, DatasetInfo
-from .tasks import CellAnnotationTask, PerturbationPredictionTask, BatchIntegrationTask, GRNInferenceTask
+from .tasks import (
+    CellAnnotationTask, PerturbationPredictionTask,
+    BatchIntegrationTask, GRNInferenceTask, TaskResult,
+)
 from .registry import ModelRegistry, DatasetRegistry, load_model, load_dataset
 from .report import BenchmarkReport
 
 __all__ = [
-    "Benchmark",
-    "BenchmarkResult",
-    "BaseModel",
-    "ModelInfo",
-    "BaseDataset",
-    "DatasetInfo",
-    "CellAnnotationTask",
-    "PerturbationPredictionTask",
-    "BatchIntegrationTask",
-    "GRNInferenceTask",
-    "ModelRegistry",
-    "DatasetRegistry",
-    "load_model",
-    "load_dataset",
+    "Benchmark", "BenchmarkResult",
+    "BaseModel", "ModelInfo",
+    "BaseDataset", "DatasetInfo",
+    "CellAnnotationTask", "PerturbationPredictionTask",
+    "BatchIntegrationTask", "GRNInferenceTask", "TaskResult",
+    "ModelRegistry", "DatasetRegistry",
+    "load_model", "load_dataset",
     "BenchmarkReport",
 ]

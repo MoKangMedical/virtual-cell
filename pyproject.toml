@@ -1,0 +1,50 @@
+[project]
+name = "virtual-cell"
+version = "0.1.0"
+description = "单细胞基础模型Benchmark平台 — 14个模型×26个数据集×4大任务"
+readme = "README.md"
+license = {text = "MIT"}
+requires-python = ">=3.10"
+authors = [{name = "MoKangMedical"}]
+keywords = ["single-cell", "foundation-model", "benchmark", "scRNA-seq", "virtual-cell"]
+classifiers = [
+    "Development Status :: 3 - Alpha",
+    "Topic :: Scientific/Engineering :: Bio-Informatics",
+    "License :: OSI Approved :: MIT License",
+    "Programming Language :: Python :: 3",
+]
+
+dependencies = [
+    "numpy>=1.24",
+    "pandas>=2.0",
+    "scipy>=1.10",
+    "scikit-learn>=1.3",
+]
+
+[project.optional-dependencies]
+full = [
+    "scanpy>=1.9",
+    "anndata>=0.10",
+    "torch>=2.0",
+    "transformers>=4.30",
+    "h5py>=3.8",
+    "matplotlib>=3.7",
+    "seaborn>=0.12",
+]
+dev = [
+    "pytest>=7.0",
+    "pytest-cov",
+    "ruff",
+    "mypy",
+]
+
+[project.scripts]
+virtual-cell = "virtual_cell.cli:main"
+
+[build-system]
+requires = ["setuptools>=68", "wheel"]
+build-backend = "setuptools.backends._legacy:_Backend"
+
+[tool.ruff]
+line-length = 100
+target-version = "py310"
