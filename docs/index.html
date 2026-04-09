@@ -1,4 +1,109 @@
-{
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>🔬 VirtualCell Benchmark Leaderboard</title>
+<style>
+*{margin:0;padding:0;box-sizing:border-box}
+:root{--bg:#1a1a2e;--bg2:#16213e;--bg3:#0f3460;--text:#eee;--text2:#aaa;--accent:#00d2ff;--accent2:#0090b3;--green:#10b981;--yellow:#f59e0b;--red:#ef4444;--purple:#a78bfa}
+body{font-family:-apple-system,'Segoe UI',Roboto,sans-serif;background:var(--bg);color:var(--text);min-height:100vh}
+.container{max-width:1400px;margin:0 auto;padding:1.5rem}
+header{text-align:center;margin-bottom:2rem}
+header h1{font-size:2.2rem;background:linear-gradient(135deg,var(--accent),var(--purple));-webkit-background-clip:text;-webkit-text-fill-color:transparent;margin-bottom:.4rem}
+header .subtitle{color:var(--text2);font-size:1rem}
+
+/* Stats cards */
+.stats{display:grid;grid-template-columns:repeat(4,1fr);gap:1rem;margin-bottom:2rem}
+.stat-card{background:var(--bg2);border:1px solid #253a5e;border-radius:12px;padding:1.2rem;text-align:center;transition:transform .2s}
+.stat-card:hover{transform:translateY(-3px)}
+.stat-num{font-size:2rem;font-weight:700;color:var(--accent)}
+.stat-lbl{color:var(--text2);font-size:.8rem;margin-top:.2rem}
+
+/* Tabs */
+.tabs{display:flex;gap:.5rem;margin-bottom:1.5rem;flex-wrap:wrap}
+.tab{padding:.6rem 1.2rem;border-radius:8px;border:1px solid #253a5e;background:var(--bg2);color:var(--text2);cursor:pointer;font-size:.9rem;transition:all .2s}
+.tab:hover{border-color:var(--accent);color:var(--text)}
+.tab.active{background:var(--accent2);color:#fff;border-color:var(--accent)}
+
+/* Table */
+.card{background:var(--bg2);border:1px solid #253a5e;border-radius:12px;padding:1.5rem;margin-bottom:1.5rem;overflow-x:auto}
+.card h2{font-size:1.2rem;margin-bottom:1rem;color:var(--text)}
+table.lb{width:100%;border-collapse:collapse;font-size:.85rem}
+table.lb th{text-align:left;padding:.6rem;color:var(--text2);border-bottom:1px solid #253a5e;font-weight:600;text-transform:uppercase;font-size:.75rem;white-space:nowrap}
+table.lb td{padding:.6rem;border-bottom:1px solid rgba(255,255,255,.05)}
+table.lb tr:hover{background:rgba(0,210,255,.05)}
+.rank{color:var(--yellow);font-weight:700;width:40px}
+.rank.gold{color:#ffd700}.rank.silver{color:#c0c0c0}.rank.bronze{color:#cd7f32}
+.model-name{font-weight:600;color:var(--accent);cursor:pointer}
+.model-name:hover{text-decoration:underline}
+.task-badge{display:inline-block;padding:.15rem .5rem;border-radius:4px;font-size:.75rem;font-weight:600}
+.task-cell_annotation{background:rgba(16,185,129,.15);color:var(--green)}
+.task-perturbation{background:rgba(245,158,11,.15);color:var(--yellow)}
+.task-integration{background:rgba(167,139,250,.15);color:var(--purple)}
+.task-grn{background:rgba(0,210,255,.15);color:var(--accent)}
+.bar-wrap{display:flex;align-items:center;gap:.5rem}
+.bar-bg{flex:1;background:#253a5e;border-radius:4px;height:20px;min-width:80px;position:relative;overflow:hidden}
+.bar-fg{height:100%;border-radius:4px;transition:width .4s}
+.bar-val{font-size:.78rem;font-weight:600;min-width:45px;text-align:right}
+
+/* Detail panel */
+.detail-panel{background:var(--bg);border:1px solid #253a5e;border-radius:8px;padding:1rem;margin:.5rem 0 1rem;display:none}
+.detail-panel.show{display:block}
+.detail-panel h3{color:var(--accent);margin-bottom:.6rem;font-size:.95rem}
+.detail-panel table{width:100%;font-size:.8rem;border-collapse:collapse}
+.detail-panel th{color:var(--text2);padding:.3rem .5rem;text-align:left;border-bottom:1px solid #253a5e;font-size:.75rem}
+.detail-panel td{padding:.3rem .5rem;border-bottom:1px solid rgba(255,255,255,.03)}
+
+/* Heatmap */
+#heatmapCanvas{width:100%;max-width:100%;border-radius:8px}
+
+/* Responsive */
+@media(max-width:768px){
+.stats{grid-template-columns:repeat(2,1fr)}
+header h1{font-size:1.5rem}
+table.lb{font-size:.75rem}
+.card{padding:1rem}
+}
+
+footer{text-align:center;color:#475569;margin-top:2rem;padding:1rem;font-size:.8rem}
+</style>
+</head>
+<body>
+<div class="container">
+<header>
+  <h1>🔬 VirtualCell Benchmark Leaderboard</h1>
+  <p class="subtitle">14 Models × 26 Datasets × 4 Tasks = Unified Evaluation Framework</p>
+</header>
+
+<div class="stats" id="statsRow"></div>
+
+<div class="card">
+  <h2>🎯 Task Filter</h2>
+  <div class="tabs" id="taskTabs"></div>
+</div>
+
+<div class="card">
+  <h2>🏆 Leaderboard</h2>
+  <table class="lb" id="leaderboardTable">
+    <thead><tr>
+      <th>#</th><th>Model</th><th>Task</th><th>Dataset</th><th>Primary Score</th><th>Metrics</th>
+    </tr></thead>
+    <tbody id="lbBody"></tbody>
+  </table>
+</div>
+
+<div class="card">
+  <h2>📊 Heatmap — Model × Task Average Scores</h2>
+  <canvas id="heatmapCanvas" height="400"></canvas>
+</div>
+
+</div>
+<footer>VirtualCell Benchmark — MoKangMedical | 2026</footer>
+
+<script>
+// ===== Embedded Benchmark Data =====
+const BENCHMARK_DATA = {
   "n_results": 168,
   "results": [
     {
@@ -2319,4 +2424,246 @@
     "n_tasks": 4,
     "total_evaluations": 168
   }
+};
+
+// ===== Constants =====
+const TASK_PRIMARY = {
+  cell_annotation: r => r.metrics.accuracy ?? 0,
+  perturbation: r => r.metrics.pcc ?? 0,
+  integration: r => {
+    const m = r.metrics;
+    const vals = [m.kbet, m.lisi, m.asw, m.graph_connectivity].filter(v => v != null);
+    return vals.length ? vals.reduce((a,b)=>a+b,0)/vals.length : 0;
+  },
+  grn: r => r.metrics.auprc ?? 0,
+};
+
+const TASK_LABELS = {
+  all: 'All Tasks',
+  cell_annotation: 'Cell Annotation',
+  perturbation: 'Perturbation',
+  integration: 'Integration',
+  grn: 'GRN',
+};
+
+// ===== State =====
+let currentTask = 'all';
+
+// ===== Init =====
+function init() {
+  renderStats();
+  renderTabs();
+  renderLeaderboard();
+  renderHeatmap();
 }
+
+// ===== Stats =====
+function renderStats() {
+  const data = BENCHMARK_DATA;
+  const models = new Set(), datasets = new Set(), tasks = new Set();
+  data.results.forEach(r => { models.add(r.model); datasets.add(r.dataset); tasks.add(r.task); });
+  const stats = [
+    { num: data.n_results, lbl: 'Total Evaluations' },
+    { num: models.size, lbl: 'Models' },
+    { num: datasets.size, lbl: 'Datasets' },
+    { num: tasks.size, lbl: 'Tasks' },
+  ];
+  document.getElementById('statsRow').innerHTML = stats.map(s =>
+    `<div class="stat-card"><div class="stat-num">${s.num}</div><div class="stat-lbl">${s.lbl}</div></div>`
+  ).join('');
+}
+
+// ===== Tabs =====
+function renderTabs() {
+  const tabs = document.getElementById('taskTabs');
+  const tasks = ['all', 'cell_annotation', 'perturbation', 'integration', 'grn'];
+  tabs.innerHTML = tasks.map(t =>
+    `<div class="tab ${t===currentTask?'active':''}" data-task="${t}">${TASK_LABELS[t]}</div>`
+  ).join('');
+  tabs.querySelectorAll('.tab').forEach(el => {
+    el.addEventListener('click', () => {
+      currentTask = el.dataset.task;
+      tabs.querySelectorAll('.tab').forEach(x => x.classList.remove('active'));
+      el.classList.add('active');
+      renderLeaderboard();
+    });
+  });
+}
+
+// ===== Leaderboard =====
+function renderLeaderboard() {
+  const data = BENCHMARK_DATA.results;
+  const filtered = currentTask === 'all' ? [...data] : data.filter(r => r.task === currentTask);
+
+  // Compute primary score
+  const scored = filtered.map(r => ({
+    ...r,
+    primary: TASK_PRIMARY[r.task] ? TASK_PRIMARY[r.task](r) : 0,
+  }));
+  scored.sort((a,b) => b.primary - a.primary);
+
+  const body = document.getElementById('lbBody');
+  body.innerHTML = '';
+
+  // Group by model for detail expansion
+  const modelData = {};
+  scored.forEach((r, idx) => {
+    if (!modelData[r.model]) modelData[r.model] = [];
+    modelData[r.model].push(r);
+  });
+
+  // Render top entries (aggregate per model if 'all', else per result)
+  if (currentTask === 'all') {
+    // Average across tasks per model
+    const modelAvg = {};
+    scored.forEach(r => {
+      if (!modelAvg[r.model]) modelAvg[r.model] = { scores: [], tasks: new Set(), datasets: new Set() };
+      modelAvg[r.model].scores.push(r.primary);
+      modelAvg[r.model].tasks.add(r.task);
+      modelAvg[r.model].datasets.add(r.dataset);
+    });
+    const ranked = Object.entries(modelAvg).map(([m, v]) => ({
+      model: m,
+      avg: v.scores.reduce((a,b)=>a+b,0)/v.scores.length,
+      n: v.scores.length,
+      tasks: v.tasks.size,
+      datasets: v.datasets.size,
+    })).sort((a,b) => b.avg - a.avg);
+
+    ranked.forEach((entry, i) => {
+      body.innerHTML += leaderboardRow(i+1, entry.model, `${entry.tasks} tasks`, `${entry.datasets} datasets`, entry.avg, '');
+      body.innerHTML += detailPanel(entry.model, modelData[entry.model]);
+    });
+  } else {
+    scored.forEach((r, i) => {
+      const metricsHtml = Object.entries(r.metrics).map(([k,v]) =>
+        `<span style="margin-right:.5rem"><b>${k}:</b> ${typeof v==='number'?v.toFixed(4):v}</span>`
+      ).join('');
+      body.innerHTML += leaderboardRow(i+1, r.model, TASK_LABELS[r.task], r.dataset, r.primary, metricsHtml);
+    });
+  }
+
+  // Click model name to expand detail
+  body.querySelectorAll('.model-name').forEach(el => {
+    el.addEventListener('click', () => {
+      const panel = el.closest('tr').nextElementSibling;
+      if (panel && panel.classList.contains('detail-panel')) {
+        panel.classList.toggle('show');
+      }
+    });
+  });
+}
+
+function leaderboardRow(rank, model, task, dataset, score, extraMetrics) {
+  const barW = Math.max(0, Math.min(100, score * 100));
+  const color = score > 0.8 ? 'var(--green)' : score > 0.5 ? 'var(--yellow)' : 'var(--red)';
+  const rankCls = rank===1?'gold':rank===2?'silver':rank===3?'bronze':'';
+  return `<tr>
+    <td class="rank ${rankCls}">#${rank}</td>
+    <td class="model-name" title="Click to expand">${model}</td>
+    <td>${task}</td>
+    <td style="color:var(--text2)">${dataset}</td>
+    <td><div class="bar-wrap">
+      <div class="bar-bg"><div class="bar-fg" style="width:${barW}%;background:${color}"></div></div>
+      <span class="bar-val" style="color:${color}">${score.toFixed(4)}</span>
+    </div></td>
+    <td style="font-size:.75rem;color:var(--text2)">${extraMetrics}</td>
+  </tr>`;
+}
+
+function detailPanel(modelName, entries) {
+  if (!entries || !entries.length) return '';
+  const rows = entries.map(r => {
+    const metricsTd = Object.entries(r.metrics).map(([k,v]) => `<td>${typeof v==='number'?v.toFixed(4):v}</td>`).join('');
+    return `<tr><td>${TASK_LABELS[r.task]||r.task}</td><td>${r.dataset}</td>${metricsTd}</tr>`;
+  }).join('');
+  // Get metric headers from first entry
+  const mKeys = Object.keys(entries[0].metrics);
+  const ths = mKeys.map(k => `<th>${k}</th>`).join('');
+
+  return `<tr><td colspan="6"><div class="detail-panel" id="detail-${modelName.replace(/\s/g,'_')}">
+    <h3>📋 ${modelName} — All Results (${entries.length} evaluations)</h3>
+    <table><thead><tr><th>Task</th><th>Dataset</th>${ths}</tr></thead><tbody>${rows}</tbody></table>
+  </div></td></tr>`;
+}
+
+// ===== Heatmap =====
+function renderHeatmap() {
+  const canvas = document.getElementById('heatmapCanvas');
+  const ctx = canvas.getContext('2d');
+  const data = BENCHMARK_DATA.results;
+
+  // Compute model × task average scores
+  const matrix = {};
+  const models = new Set(), tasks = new Set();
+  data.forEach(r => {
+    models.add(r.model);
+    tasks.add(r.task);
+    const key = `${r.model}|${r.task}`;
+    if (!matrix[key]) matrix[key] = [];
+    matrix[key].push(TASK_PRIMARY[r.task] ? TASK_PRIMARY[r.task](r) : 0);
+  });
+
+  const modelList = [...models].sort();
+  const taskList = [...tasks].sort();
+  const taskLabels = taskList.map(t => TASK_LABELS[t] || t);
+
+  const cellW = Math.max(60, Math.floor((canvas.parentElement.clientWidth - 180) / taskList.length));
+  const cellH = 30;
+  const leftPad = 140;
+  const topPad = 60;
+
+  canvas.width = leftPad + cellW * taskList.length + 20;
+  canvas.height = topPad + cellH * modelList.length + 20;
+
+  // Background
+  ctx.fillStyle = '#1a1a2e';
+  ctx.fillRect(0, 0, canvas.width, canvas.height);
+
+  // Task headers
+  ctx.fillStyle = '#aaa';
+  ctx.font = '12px sans-serif';
+  ctx.textAlign = 'center';
+  taskLabels.forEach((t, j) => {
+    ctx.save();
+    ctx.translate(leftPad + j * cellW + cellW/2, topPad - 10);
+    ctx.rotate(-0.4);
+    ctx.fillText(t, 0, 0);
+    ctx.restore();
+  });
+
+  // Draw cells
+  modelList.forEach((model, i) => {
+    // Model label
+    ctx.fillStyle = '#00d2ff';
+    ctx.font = '12px sans-serif';
+    ctx.textAlign = 'right';
+    ctx.fillText(model, leftPad - 8, topPad + i * cellH + cellH/2 + 4);
+
+    taskList.forEach((task, j) => {
+      const key = `${model}|${task}`;
+      const vals = matrix[key] || [0];
+      const avg = vals.reduce((a,b)=>a+b,0) / vals.length;
+
+      // Color: red(0) → yellow(0.5) → green(1)
+      const r = avg < 0.5 ? 255 : Math.round(255 * (1 - avg) * 2);
+      const g = avg > 0.5 ? 200 : Math.round(200 * avg * 2);
+      ctx.fillStyle = `rgb(${r},${g},60)`;
+      ctx.fillRect(leftPad + j * cellW + 2, topPad + i * cellH + 2, cellW - 4, cellH - 4);
+
+      ctx.fillStyle = '#fff';
+      ctx.font = 'bold 11px sans-serif';
+      ctx.textAlign = 'center';
+      ctx.fillText(avg.toFixed(2), leftPad + j * cellW + cellW/2, topPad + i * cellH + cellH/2 + 4);
+    });
+  });
+}
+
+// Resize handler
+window.addEventListener('resize', () => renderHeatmap());
+
+// Go
+init();
+</script>
+</body>
+</html>

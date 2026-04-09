@@ -165,6 +165,52 @@ print(f"F1 Score: {result.f1:.3f}")
 | 疾病建模 | 虚拟细胞模拟疾病状态 | 学术机构 |
 | 生物学验证 | 替代部分湿实验 | CRO公司 |
 
+## 📊 Reports & Leaderboard
+
+### 终端排行榜
+
+```bash
+# 查看所有评估结果的排行榜
+virtual-cell leaderboard
+```
+
+### HTML报告生成
+
+```bash
+# 运行benchmark并生成HTML报告（热力图 + 排行榜）
+virtual-cell report --models scgpt,geneformer,scbert --datasets zheng68k --tasks cell_annotation,perturbation
+
+# 输出：
+#   benchmark_report_heatmap.html
+#   benchmark_report_leaderboard.html
+```
+
+### 模型对比
+
+```bash
+# 对比两个模型，生成HTML对比报告
+virtual-cell compare scgpt geneformer --output comparison.html
+```
+
+### 模型详情
+
+```bash
+# 查看单个模型详细信息
+virtual-cell info scgpt
+```
+
+### 🌐 GitHub Pages
+
+交互式排行榜已部署到 GitHub Pages：
+
+**🔗 [VirtualCell Benchmark Leaderboard](https://mokangmedical.github.io/virtual-cell/)**
+
+功能包括：
+- 🏆 按任务筛选的排行榜
+- 📊 模型 × 任务热力图（Canvas绘制）
+- 📋 点击模型名展开所有数据集得分
+- 📱 响应式布局，支持移动端
+
 ## 🗺️ Roadmap
 
 - [x] 架构设计
@@ -176,7 +222,7 @@ print(f"F1 Score: {result.f1:.3f}")
 - [ ] 真实模型集成（需要GPU环境）
 - [ ] 首个Benchmark结果
 - [ ] 论文撰写
-- [ ] GitHub Pages
+- [x] GitHub Pages
 
 ## 📄 License
 

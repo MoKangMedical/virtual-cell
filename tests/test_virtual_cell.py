@@ -1,6 +1,9 @@
 """VirtualCell 测试套件。"""
 
 import sys
+import os
+import tempfile
+
 sys.path.insert(0, '/root/virtual-cell')
 
 from virtual_cell import (
@@ -88,6 +91,113 @@ def test_task_filter():
     print(f"✅ 任务筛选: perturbation有{len(perturbation_datasets)}个数据集")
 
 
+def test_visualizer_heatmap():
+    """测试Visualizer.generate_heatmap生成HTML热力图。"""
+    from virtual_cell.visualizer import Visualizer
+
+    bench = Benchmark()
+    result = bench.run(
+        models=["scgpt", "geneformer"],
+        datasets=["zheng68k"],
+        tasks=["cell_annotation", "perturbation"],
+        max_cells=100, max_genes=50,
+    )
+
+    viz = Visualizer(result)
+    with tempfile.NamedTemporaryFile(suffix=".html", delete=False, mode="w") as f:
+        tmp_path = f.name
+
+    html = viz.generate_heatmap(output_path=tmp_path)
+    assert "<html" in html
+    assert "Model" in html or "model" in html
+    assert os.path.exists(tmp_path)
+    with open(tmp_path) as f:
+        content = f.read()
+    assert len(content) > 500
+
+    os.unlink(tmp_path)
+    print(f"✅ Visualizer heatmap: {len(html)}字符")
+
+
+def test_visualizer_leaderboard():
+    """测试Visualizer.generate_leaderboard_html生成排行榜HTML。"""
+    from virtual_cell.visualizer import Visualizer
+
+    bench = Benchmark()
+    result = bench.run(
+        models=["scgpt", "geneformer"],
+        datasets=["zheng68k"],
+        tasks=["cell_annotation"],
+        max_cells=100, max_genes=50,
+    )
+
+    viz = Visualizer(result)
+    with tempfile.NamedTemporaryFile(suffix=".html", delete=False, mode="w") as f:
+        tmp_path = f.name
+
+    html = viz.generate_leaderboard_html(output_path=tmp_path)
+    assert "<html" in html
+    assert "Leaderboard" in html or "leaderboard" in html or "排行" in html
+    assert os.path.exists(tmp_path)
+
+    os.unlink(tmp_path)
+    print(f"✅ Visualizer leaderboard: {len(html)}字符")
+
+
+def test_cli_leaderboard():
+    """测试CLI leaderboard命令。"""
+    from virtual_cell.cli import _cmd_leaderboard
+
+    # Just ensure it doesn't crash — output goes to stdout
+    import io
+    from contextlib import redirect_stdout
+
+    buf = io.StringIO()
+    with redirect_stdout(buf):
+        _cmd_leaderboard()
+
+    output = buf.getvalue()
+    assert "排行榜" in output or "Leaderboard" in output or "scGPT" in output
+    print(f"✅ CLI leaderboard: 输出{len(output)}字符")
+
+
+def test_cli_report():
+    """测试CLI report命令生成HTML文件。"""
+    from virtual_cell.cli import _cmd_report
+    import argparse
+
+    with tempfile.TemporaryDirectory() as tmpdir:
+        output_prefix = os.path.join(tmpdir, "test_report")
+
+        args = argparse.Namespace(
+            models="scgpt,geneformer",
+            datasets="zheng68k",
+            tasks="cell_annotation",
+            max_cells=100,
+            max_genes=50,
+            output=output_prefix,
+        )
+
+        import io
+        from contextlib import redirect_stdout
+        buf = io.StringIO()
+        with redirect_stdout(buf):
+            _cmd_report(args)
+
+        heatmap_path = f"{output_prefix}_heatmap.html"
+        leaderboard_path = f"{output_prefix}_leaderboard.html"
+
+        assert os.path.exists(heatmap_path), f"热力图文件未生成: {heatmap_path}"
+        assert os.path.exists(leaderboard_path), f"排行榜文件未生成: {leaderboard_path}"
+
+        with open(heatmap_path) as f:
+            assert len(f.read()) > 100
+        with open(leaderboard_path) as f:
+            assert len(f.read()) > 100
+
+    print(f"✅ CLI report: HTML文件生成成功")
+
+
 if __name__ == "__main__":
     print("=" * 50)
     print("🧪 VirtualCell Test Suite")
@@ -101,6 +211,10 @@ if __name__ == "__main__":
     test_benchmark_run()
     test_report_generation()
     test_task_filter()
+    test_visualizer_heatmap()
+    test_visualizer_leaderboard()
+    test_cli_leaderboard()
+    test_cli_report()
 
     print()
     print("🎉 全部测试通过！")
