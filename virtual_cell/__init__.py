@@ -4,7 +4,7 @@ VirtualCell — 单细胞基础模型Benchmark平台
 统一评估14个基础模型在26个数据集上的4大任务表现。
 """
 
-__version__ = "0.3.0"
+__version__ = "0.4.0"
 __author__ = "MoKangMedical"
 
 from .benchmark import Benchmark, BenchmarkResult
