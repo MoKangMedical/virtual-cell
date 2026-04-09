@@ -225,6 +225,27 @@ SCPRINT_INFO = ModelInfo(
     year=2024,
 )
 
+LINGSHU_CELL_INFO = ModelInfo(
+    name="Lingshu-Cell",
+    architecture=ModelArchitecture.HYBRID,
+    pretrain_cells=0,
+    pretrain_data="多组织scRNA-seq",
+    parameters="~100M",
+    paper="https://doi.org/10.48550/arXiv.Lingshu-Cell",
+    code_repo="",
+    supported_tasks=["cell_annotation", "perturbation", "integration", "generation"],
+    strengths=[
+        "掩码离散扩散，适配单细胞离散/稀疏/无序特性",
+        "全转录组~18000基因建模",
+        "联合嵌入（细胞身份+扰动条件）",
+        "VCC H1基准领先",
+        "跨9组织5物种泛化",
+    ],
+    weaknesses=["推理速度较连续扩散慢", "仅基于转录组数据"],
+    license="MIT",
+    year=2025,
+)
+
 # 简化定义其余模型
 MODELS_INFO = {
     "scgpt": SCGPT_INFO,
@@ -234,6 +255,7 @@ MODELS_INFO = {
     "regformer": REGFORMER_INFO,
     "nicheformer": NICHEFORMER_INFO,
     "scprint": SCPRINT_INFO,
+    "lingshu": LINGSHU_CELL_INFO,
     "celllm": ModelInfo("CellLM", ModelArchitecture.BERT_ENCODER, 5_000_000, "多数据集", "~80M", "", "", ["cell_annotation"], ["通用细胞理解"], ["需更多验证"], "MIT", 2024),
     "cellplm": ModelInfo("CellPLM", ModelArchitecture.PREFIX_LM, 3_000_000, "多组学", "~60M", "", "", ["cell_annotation", "perturbation"], ["前缀注意力"], ["较新"], "MIT", 2024),
     "tgpt": ModelInfo("tGPT", ModelArchitecture.GPT_DECODER, 1_000_000, "scRNA-seq", "~50M", "", "", ["generation"], ["生成建模"], ["任务有限"], "MIT", 2023),

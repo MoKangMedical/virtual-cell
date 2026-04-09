@@ -8,3 +8,4 @@ build/
 *.h5
 data/
 /tmp/
+test_gen_report_*.html

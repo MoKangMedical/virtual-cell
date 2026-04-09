@@ -191,3 +191,62 @@ class Benchmark:
             execution_time_ms=elapsed,
             metadata={"mode": "full_benchmark", "max_cells": max_cells},
         )
+
+    def generate_and_evaluate(
+        self,
+        task: str,
+        dataset: str,
+        generator: str = "cellforge",
+        n_architectures: int = 3,
+        **kwargs,
+    ) -> BenchmarkResult:
+        """
+        生成架构 → 自动评估 → 返回排行榜。
+
+        这是核心闭环：CellForge生成 → VirtualCell评估 → 选出最优。
+
+        Args:
+            task: 任务类型（perturbation/cell_annotation/integration/grn）。
+            dataset: 目标数据集名称。
+            generator: 生成器名称（默认"cellforge"）。
+            n_architectures: 生成候选数。
+
+        Returns:
+            BenchmarkResult含所有生成架构的评估结果和排行榜。
+        """
+        from .generators import CellForgeGenerator
+        from .generators.model_adapter import GeneratedModelAdapter
+
+        gen = CellForgeGenerator()
+
+        # Phase 1-2: 生成N个候选架构
+        gen_result = gen.generate(task, dataset, n_architectures=n_architectures)
+
+        # Phase 3: 每个架构适配为BaseModel并评估
+        results = []
+        start = time.time()
+
+        for arch in gen_result.architectures:
+            model = GeneratedModelAdapter(arch)
+            ds = create_dataset(dataset)
+            ds.load(**kwargs)
+            model.load()
+
+            result = self.evaluate(model, ds, task, **kwargs)
+            result.metadata["architecture"] = arch.to_dict()
+            result.metadata["design_rationale"] = arch.design_rationale
+            results.append(result)
+
+        self.results.extend(results)
+
+        elapsed = (time.time() - start) * 1000
+        return BenchmarkResult(
+            results=results,
+            execution_time_ms=elapsed,
+            metadata={
+                "mode": "generate_and_evaluate",
+                "generator": generator,
+                "task_analysis": gen_result.task_analysis,
+                "design_history": gen_result.design_history,
+            },
+        )

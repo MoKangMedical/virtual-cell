@@ -65,6 +65,14 @@ def main():
     compare_parser.add_argument("--max-cells", type=int, default=500, help="最大细胞数")
     compare_parser.add_argument("--output", "-o", default="comparison.html", help="输出HTML路径")
 
+    # generate 子命令
+    gen_parser = sub.add_parser("generate", help="生成架构并自动评估 (CellForge)")
+    gen_parser.add_argument("--task", "-t", required=True, choices=["perturbation", "cell_annotation", "integration", "grn"], help="目标任务")
+    gen_parser.add_argument("--dataset", "-d", default="adamson2016", help="目标数据集")
+    gen_parser.add_argument("--n", "-n", type=int, default=3, help="生成候选数")
+    gen_parser.add_argument("--max-cells", type=int, default=500, help="最大细胞数")
+    gen_parser.add_argument("--output", "-o", default="cellforge_report", help="输出文件前缀")
+
     args = parser.parse_args()
 
     if args.command == "list":
@@ -79,6 +87,8 @@ def main():
         _cmd_report(args)
     elif args.command == "compare":
         _cmd_compare(args)
+    elif args.command == "generate":
+        _cmd_generate(args)
     else:
         parser.print_help()
 
@@ -278,6 +288,54 @@ def _cmd_compare(args):
     viz = Visualizer(result)
     viz.generate_comparison(args.model1, args.model2, output=args.output)
     print(f"📄 对比报告: {args.output}")
+
+
+def _cmd_generate(args):
+    """生成架构并自动评估。"""
+    from .benchmark import Benchmark
+    from .visualizer import Visualizer
+
+    print(f"\n🧬 CellForge 架构生成")
+    print(f"   任务: {args.task}")
+    print(f"   数据集: {args.dataset}")
+    print(f"   生成候选: {args.n}")
+    print()
+
+    bench = Benchmark()
+    result = bench.generate_and_evaluate(
+        task=args.task,
+        dataset=args.dataset,
+        n_architectures=args.n,
+        max_cells=args.max_cells,
+    )
+
+    print(f"✅ 生成 {args.n} 个架构, {len(result.results)} 次评估, {result.execution_time_ms:.0f}ms\n")
+
+    # 排行榜
+    leaderboard = result.get_leaderboard()
+    print("🏆 生成架构排行:")
+    for i, entry in enumerate(leaderboard, 1):
+        meta = result.metadata.get("design_history", [{} for _ in leaderboard])
+        innovations = meta[i-1].get("selected_innovations", []) if i-1 < len(meta) else []
+        print(f"  {i}. {entry['model']:40s} | Score: {entry['primary_score']:.4f}")
+        if innovations:
+            print(f"     创新: {', '.join(innovations)}")
+
+    # 设计分析
+    task_analysis = result.metadata.get("task_analysis", {})
+    if task_analysis:
+        print(f"\n📋 任务分析:")
+        print(f"   关键挑战: {task_analysis.get('key_challenges', 'N/A')}")
+        print(f"   推荐指标: {', '.join(task_analysis.get('recommended_metrics', []))}")
+
+    # 生成HTML报告
+    viz = Visualizer(result)
+    heatmap_path = f"{args.output}_heatmap.html"
+    leaderboard_path = f"{args.output}_leaderboard.html"
+    viz.generate_heatmap(output_path=heatmap_path)
+    viz.generate_leaderboard_html(output_path=leaderboard_path)
+    print(f"\n📄 热力图: {heatmap_path}")
+    print(f"📄 排行榜: {leaderboard_path}")
 
 
 if __name__ == "__main__":

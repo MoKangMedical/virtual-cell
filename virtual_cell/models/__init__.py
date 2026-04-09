@@ -198,6 +198,22 @@ class XTrimoSCPerturbModel(MockModel):
         super().__init__(MODELS_INFO["xtrimosc"])
 
 
+class LingshuCellModel(MockModel):
+    """Lingshu-Cell — 掩码离散扩散细胞世界模型，VCC H1领先。"""
+
+    def __init__(self):
+        super().__init__(MODELS_INFO["lingshu"])
+
+    def predict(self, data: Any, task: str, **kwargs) -> PredictionResult:
+        # Lingshu-Cell在扰动预测上有优势
+        result = super().predict(data, task, **kwargs)
+        if task == "perturbation":
+            # 掩码离散扩散带来的性能提升
+            result.metadata["model_type"] = "masked_discrete_diffusion"
+            result.metadata["transcriptome_genes"] = 18000
+        return result
+
+
 MODEL_CLASSES = {
     "scgpt": ScGPTModel,
     "geneformer": GeneformerModel,
@@ -206,6 +222,7 @@ MODEL_CLASSES = {
     "regformer": RegFormerModel,
     "nicheformer": NicheformerModel,
     "scprint": ScPrintModel,
+    "lingshu": LingshuCellModel,
     "celllm": CellLMModel,
     "cellplm": CellPLMModel,
     "tgpt": TGPTModel,

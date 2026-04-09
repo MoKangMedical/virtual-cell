@@ -4,7 +4,7 @@ VirtualCell — 单细胞基础模型Benchmark平台
 统一评估14个基础模型在26个数据集上的4大任务表现。
 """
 
-__version__ = "0.1.0"
+__version__ = "0.3.0"
 __author__ = "MoKangMedical"
 
 from .benchmark import Benchmark, BenchmarkResult
@@ -16,6 +16,10 @@ from .tasks import (
 )
 from .registry import ModelRegistry, DatasetRegistry, load_model, load_dataset
 from .report import BenchmarkReport
+from .generators import (
+    BaseGenerator, GeneratedArchitecture, GenerationResult,
+    CellForgeGenerator, CellForgeConfig,
+)
 
 __all__ = [
     "Benchmark", "BenchmarkResult",
@@ -26,4 +30,6 @@ __all__ = [
     "ModelRegistry", "DatasetRegistry",
     "load_model", "load_dataset",
     "BenchmarkReport",
+    "BaseGenerator", "GeneratedArchitecture", "GenerationResult",
+    "CellForgeGenerator", "CellForgeConfig",
 ]
