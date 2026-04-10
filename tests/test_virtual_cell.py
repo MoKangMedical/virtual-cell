@@ -312,7 +312,7 @@ def test_model_count():
 
 if __name__ == "__main__":
     print("=" * 50)
-    print("🧪 VirtualCell Test Suite v0.3.0")
+    print("🧪 VirtualCell Test Suite v0.4.0")
     print("=" * 50)
 
     test_model_registry()

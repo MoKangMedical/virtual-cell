@@ -1,6 +1,6 @@
-# 🔬 VirtualCell — 单细胞基础模型Benchmark平台
+# 🔬 VirtualCell v0.4.0 — 单细胞基础模型Benchmark平台
 
-**26个数据集 × 14个模型 × 4大任务 = 虚拟细胞的统一评估框架**
+**15个模型 × 26个数据集 × 4大任务 × CellForge自动架构设计 = 虚拟细胞的统一评估框架**
 
 > 用AI虚拟细胞替代真实实验，72小时完成6个月的生物学验证。
 
@@ -20,7 +20,29 @@ VirtualCell = 单细胞AI的 **ImageNet** —— 不是训练模型，是定义"
 
 **虚拟细胞的答案**：用AI基础模型预训练在数百万细胞上，学会"细胞的语言"，然后零样本/少样本解决下游任务。
 
-## 📦 14个基础模型
+## 🆕 v0.4.0 新特性
+
+### CellForge — 多智能体架构设计引擎
+- **三阶段流程**：Task Analysis → Method Design（多Agent讨论）→ Code Generation
+- **Mock模式**：基于文献知识的架构模板生成，无需GPU
+- **Full模式**：调用CellForge实际多Agent流程（需安装CellForge + LLM API）
+- **创新组件库**：9个领域特定创新模块（轨迹感知编码器、扰动扩散模块、基因交互GNN等）
+
+### Lingshu-Cell — 掩码离散扩散模型
+- **架构**：Transformer + 掩码离散扩散（MDDM）
+- **创新**：281级token化基因表达、SwiGLU FFN、RoPE位置编码、序列压缩
+- **能力**：扰动预测、条件生成、采样
+- **训练**：LingshuTrainer支持单步训练
+
+### REST API v0.4.0
+- 15个端点（新增6个：pipeline/run、leaderboard/{task}、compare、generators、stats、models/{name}/detail）
+- Pydantic请求模型 + 完整错误处理
+
+### VCC Pipeline
+- 对接Arc Institute Virtual Cell Challenge标准
+- 标准化评估指标：DES、PDS、MAE、Spearman、AUPRC、Pearson-Δ
+
+## 📦 15个基础模型
 
 | 模型 | 架构 | 预训练数据 | 核心能力 | 论文 |
 |------|------|-----------|---------|------|
@@ -38,6 +60,7 @@ VirtualCell = 单细胞AI的 **ImageNet** —— 不是训练模型，是定义"
 | **CPA** | VAE+Attention | 扰动数据 | 组合扰动预测 | Nature Methods 2023 |
 | **GEARS** | GNN+Transformer | 扰动数据 | 基因扰动推断 | Nature Biotech 2023 |
 | **xTrimoSCPerturb** | Hybrid | scFoundation | 扰动预测（VCC冠军）| 2025 |
+| **🆕 Lingshu-Cell** | MDDM (Transformer+Diffusion) | scRNA-seq | 扰动预测/条件生成 | 2026 |
 
 ## 📊 26个数据集
 
@@ -56,24 +79,7 @@ VirtualCell = 单细胞AI的 **ImageNet** —— 不是训练模型，是定义"
 | Tabula Sapiens | 500K+ | 人体多组织 | 细胞图谱 |
 
 ### 扩展数据集（16个）
-| 数据集 | 用途 | 来源 |
-|--------|------|------|
-| Zhengsorted | 细胞分选验证 | 10X Genomics |
-| Macosko2015 | 视网膜细胞 | Drop-seq |
-| Baron2016 | 胰腺 | inDrop |
-| Muraro2016 | 胰腺 | CEL-seq2 |
-| Segerstolpe2016 | 胰腺 | Smart-seq2 |
-| Xin2016 | 胰腺 | SMARTer |
-| Lawlor2017 | 胰腺 | Fluidigm C1 |
-| Enge2017 | 胰腺衰老 | inDrop |
-| Camp2017 | 大脑类器官 | Drop-seq |
-| Plasschaert2019 | 肺上皮 | 10X |
-| Lukowski2019 | 视网膜 | 10X |
-| Travaglini2020 | 肺 | 10X |
-| Cao2020 | 斑马鱼 | sci-RNA-seq3 |
-| Cao2017 | 蠕虫发育 | sci-RNA-seq |
-| Saunders2018 | 小鼠大脑 | Drop-seq |
-| Virtual Cell Challenge | H1 hESCs扰动 | Arc Institute |
+Zhengsorted, Macosko2015, Baron2016, Muraro2016, Segerstolpe2016, Xin2016, Lawlor2017, Enge2017, Camp2017, Plasschaert2019, Lukowski2019, Travaglini2020, Cao2020, Cao2017, Saunders2018, Virtual Cell Challenge
 
 ## 🧪 4大评估任务
 
@@ -82,7 +88,7 @@ VirtualCell = 单细胞AI的 **ImageNet** —— 不是训练模型，是定义"
 - 基准：scBERT > scGPT > Geneformer
 
 ### 2. 扰动预测 (Perturbation Prediction)
-- 指标：PDS (Perturbation Discrimination Score), DES, MAE, MSE, PCC
+- 指标：PDS, DES, MAE, MSE, PCC
 - 基准：xTrimoSCPerturb > RegFormer > CPA > scGPT
 
 ### 3. 批次整合 (Batch Integration)
@@ -98,32 +104,32 @@ VirtualCell = 单细胞AI的 **ImageNet** —— 不是训练模型，是定义"
 ```
 virtual-cell/
 ├── virtual_cell/
-│   ├── models/          # 14个模型的统一接口
+│   ├── models/          # 15个模型的统一接口
 │   │   ├── base.py      # 基础模型抽象类
-│   │   ├── scgpt.py     # scGPT 封装
-│   │   ├── geneformer.py # Geneformer 封装
-│   │   ├── scbert.py    # scBERT 封装
-│   │   └── ...          # 其他11个模型
+│   │   ├── lingshu_cell.py  # 🆕 Lingshu-Cell (MDDM)
+│   │   └── ...
+│   ├── generators/      # 🆕 CellForge架构生成器
+│   │   ├── cellforge.py     # Mock模式
+│   │   ├── cellforge_full.py # Full模式（多Agent）
+│   │   └── model_adapter.py # 架构→BaseModel适配器
+│   ├── vcc/             # 🆕 VCC Pipeline
+│   │   └── pipeline.py      # 标准评估流程
 │   ├── datasets/        # 26个数据集加载器
-│   │   ├── base.py      # 数据集抽象类
-│   │   ├── census.py    # CELLxGENE Census
-│   │   ├── atlas.py     # Human Cell Atlas
-│   │   └── ...          # 其他数据集
 │   ├── tasks/           # 4大评估任务
-│   │   ├── annotation.py    # 细胞注释
-│   │   ├── perturbation.py  # 扰动预测
-│   │   ├── integration.py   # 批次整合
-│   │   └── grn.py           # GRN推断
-│   ├── utils/           # 工具函数
 │   ├── benchmark.py     # 主benchmark引擎
-│   └── report.py        # 结果报告生成
-├── scripts/             # 运行脚本
-├── tests/               # 测试
-├── docs/                # 文档
-└── examples/            # 示例
+│   ├── api.py           # REST API (15端点)
+│   ├── report.py        # 结果报告生成
+│   ├── visualizer.py    # 可视化
+│   └── downloader.py    # 数据下载器
+├── tests/               # 测试套件 (55+ tests)
+├── examples/            # 示例脚本
+│   └── cellforge_demo.py    # 🆕 端到端演示
+└── docs/                # 文档
 ```
 
 ## ⚡ Quick Start
+
+### Python API
 
 ```python
 from virtual_cell import Benchmark, load_model, load_dataset
@@ -140,21 +146,215 @@ result = benchmark.evaluate(
     task="cell_annotation",
 )
 
-print(f"Accuracy: {result.accuracy:.3f}")
-print(f"F1 Score: {result.f1:.3f}")
+print(f"Accuracy: {result.metrics['accuracy']:.3f}")
+```
+
+### CellForge 架构生成
+
+```python
+from virtual_cell.generators import CellForgeGenerator
+
+gen = CellForgeGenerator()
+result = gen.generate("perturbation", "adamson2016", n_architectures=3)
+
+# 最优架构
+best = result.best()
+print(f"Best: {best.name}, Confidence: {best.confidence:.4f}")
+print(f"Innovations: {best.innovations}")
+print(f"Code:\n{best.code}")
+```
+
+### VCC Pipeline
+
+```python
+from virtual_cell.vcc.pipeline import VCCPipeline, VCCMetrics
+import numpy as np
+
+pipeline = VCCPipeline()
+pred = np.random.randn(100, 50)
+gt = np.random.randn(100, 50)
+
+metrics = pipeline.evaluate(pred, gt)
+print(f"MAE: {metrics.mae:.4f}, PDS: {metrics.pds:.4f}")
+
+# 格式化为VCC提交
+submission = pipeline.format_submission(metrics, "my_model")
+pipeline.save_submission(submission, "submission.json")
+```
+
+### 完整 Generate & Evaluate
+
+```python
+from virtual_cell.benchmark import Benchmark
+
+bench = Benchmark()
+result = bench.generate_and_evaluate(
+    task="perturbation",
+    dataset="adamson2016",
+    n_architectures=3,
+)
+
+for entry in result.get_leaderboard():
+    print(f"{entry['model']}: {entry['primary_score']:.4f}")
+```
+
+## 🌐 REST API 文档
+
+### 启动服务
+
+```bash
+pip install uvicorn
+uvicorn virtual_cell.api:app --host 0.0.0.0 --port 8000
+```
+
+### 端点列表
+
+| 方法 | 端点 | 描述 |
+|------|------|------|
+| GET | `/health` | 健康检查 |
+| GET | `/models` | 列出所有模型 |
+| GET | `/datasets` | 列出所有数据集 |
+| GET | `/tasks` | 列出所有任务 |
+| POST | `/generate` | 生成架构（CellForge） |
+| POST | `/benchmark` | 运行评估 |
+| GET | `/leaderboard` | 获取排行榜 |
+| POST | `/predict` | 单模型预测 |
+| GET | `/info/{model}` | 模型基本信息 |
+| POST | `/api/v1/pipeline/run` | 🆕 完整VCC Pipeline |
+| GET | `/api/v1/leaderboard/{task}` | 🆕 按任务筛选排行榜 |
+| POST | `/api/v1/compare` | 🆕 对比两个模型 |
+| GET | `/api/v1/generators` | 🆕 列出所有生成器 |
+| GET | `/api/v1/stats` | 🆕 平台统计 |
+| GET | `/api/v1/models/{name}/detail` | 🆕 模型详情 |
+
+### 示例 curl 命令
+
+```bash
+# 健康检查
+curl http://localhost:8000/health
+
+# 平台统计
+curl http://localhost:8000/api/v1/stats
+
+# 列出生成器
+curl http://localhost:8000/api/v1/generators
+
+# 模型详情
+curl http://localhost:8000/api/v1/models/scgpt/detail
+
+# 按任务排行榜
+curl http://localhost:8000/api/v1/leaderboard/perturbation
+
+# 运行完整Pipeline
+curl -X POST http://localhost:8000/api/v1/pipeline/run \
+  -H "Content-Type: application/json" \
+  -d '{"task": "perturbation", "dataset": "adamson2016", "n_architectures": 3}'
+
+# 对比两个模型
+curl -X POST http://localhost:8000/api/v1/compare \
+  -H "Content-Type: application/json" \
+  -d '{"model1": "scgpt", "model2": "geneformer", "tasks": ["cell_annotation"]}'
+
+# 生成架构
+curl -X POST http://localhost:8000/generate \
+  -H "Content-Type: application/json" \
+  -d '{"task": "perturbation", "dataset": "adamson2016", "n_architectures": 3}'
+
+# 运行Benchmark
+curl -X POST http://localhost:8000/benchmark \
+  -H "Content-Type: application/json" \
+  -d '{"models": ["scgpt", "geneformer"], "datasets": ["zheng68k"], "tasks": ["cell_annotation"], "max_cells": 500}'
+```
+
+## 📊 Reports & Leaderboard
+
+### 终端排行榜
+
+```bash
+virtual-cell leaderboard
+```
+
+### HTML报告生成
+
+```bash
+virtual-cell report --models scgpt,geneformer,scbert --datasets zheng68k --tasks cell_annotation,perturbation
+```
+
+### 端到端演示
+
+```bash
+python3 examples/cellforge_demo.py
+```
+
+## 🔄 VCC Pipeline 流程
+
+```
+输入任务描述
+    │
+    ▼
+┌─────────────────────┐
+│  Phase 1: 数据分析   │  分析数据集特征 + 文献RAG
+└────────┬────────────┘
+         │
+         ▼
+┌─────────────────────┐
+│  Phase 2: 架构设计   │  多Agent专家讨论 → 生成N个候选
+└────────┬────────────┘
+         │
+         ▼
+┌─────────────────────┐
+│  Phase 3: 代码生成   │  每个架构生成PyTorch代码
+└────────┬────────────┘
+         │
+         ▼
+┌─────────────────────┐
+│  Phase 4: 模型适配   │  GeneratedArchitecture → BaseModel
+└────────┬────────────┘
+         │
+         ▼
+┌─────────────────────┐
+│  Phase 5: 评估       │  VCC标准指标 (DES/PDS/MAE/...)
+└────────┬────────────┘
+         │
+         ▼
+┌─────────────────────┐
+│  Phase 6: 排行榜     │  排名 + 生成提交文件
+└─────────────────────┘
 ```
 
 ## 🆚 与其他Benchmark对比
 
-| 特性 | VirtualCell | scGPT Benchmark | PertEval-scFM | scBERT Benchmark |
-|------|------------|-----------------|---------------|-----------------|
-| 模型数 | **14** | 3 | 5 | 2 |
+| 特性 | VirtualCell v0.4.0 | scGPT Benchmark | PertEval-scFM | scBERT Benchmark |
+|------|-------------------|-----------------|---------------|-----------------|
+| 模型数 | **15** | 3 | 5 | 2 |
 | 数据集 | **26** | 5 | 3 | 4 |
 | 任务数 | **4** | 3 | 1 | 1 |
 | 统一接口 | ✅ | ❌ | ❌ | ❌ |
 | 零样本评估 | ✅ | 部分 | ✅ | ❌ |
 | 微调评估 | ✅ | ✅ | ❌ | ✅ |
 | 报告生成 | ✅ | ❌ | ❌ | ❌ |
+| 架构自动生成 | ✅ 🆕 | ❌ | ❌ | ❌ |
+| REST API | ✅ 🆕 | ❌ | ❌ | ❌ |
+| VCC Pipeline | ✅ 🆕 | ❌ | ❌ | ❌ |
+
+## 🗺️ Roadmap
+
+- [x] 架构设计
+- [x] 模型接口层（15个模型封装，含Lingshu-Cell）
+- [x] 数据集加载层（26个数据集适配）
+- [x] 评估任务层（4大任务）
+- [x] Benchmark引擎
+- [x] 报告生成器
+- [x] CellForge集成（Mock + Full模式）
+- [x] REST API（15个端点）
+- [x] VCC Pipeline（标准评估流程）
+- [x] 端到端演示脚本
+- [x] 增强测试套件（55+ 测试）
+- [x] GitHub Pages
+- [ ] 真实模型集成（需要GPU环境）
+- [ ] 首个Benchmark结果
+- [ ] CellForge Full模式多Agent优化
+- [ ] 论文撰写
 
 ## 💰 应用场景
 
@@ -165,70 +365,11 @@ print(f"F1 Score: {result.f1:.3f}")
 | 疾病建模 | 虚拟细胞模拟疾病状态 | 学术机构 |
 | 生物学验证 | 替代部分湿实验 | CRO公司 |
 
-## 📊 Reports & Leaderboard
-
-### 终端排行榜
-
-```bash
-# 查看所有评估结果的排行榜
-virtual-cell leaderboard
-```
-
-### HTML报告生成
-
-```bash
-# 运行benchmark并生成HTML报告（热力图 + 排行榜）
-virtual-cell report --models scgpt,geneformer,scbert --datasets zheng68k --tasks cell_annotation,perturbation
-
-# 输出：
-#   benchmark_report_heatmap.html
-#   benchmark_report_leaderboard.html
-```
-
-### 模型对比
-
-```bash
-# 对比两个模型，生成HTML对比报告
-virtual-cell compare scgpt geneformer --output comparison.html
-```
-
-### 模型详情
-
-```bash
-# 查看单个模型详细信息
-virtual-cell info scgpt
-```
-
-### 🌐 GitHub Pages
-
-交互式排行榜已部署到 GitHub Pages：
-
-**🔗 [VirtualCell Benchmark Leaderboard](https://mokangmedical.github.io/virtual-cell/)**
-
-功能包括：
-- 🏆 按任务筛选的排行榜
-- 📊 模型 × 任务热力图（Canvas绘制）
-- 📋 点击模型名展开所有数据集得分
-- 📱 响应式布局，支持移动端
-
-## 🗺️ Roadmap
-
-- [x] 架构设计
-- [x] 模型接口层（14个模型封装）
-- [x] 数据集加载层（26个数据集适配）
-- [x] 评估任务层（4大任务）
-- [x] Benchmark引擎
-- [x] 报告生成器
-- [ ] 真实模型集成（需要GPU环境）
-- [ ] 首个Benchmark结果
-- [ ] 论文撰写
-- [x] GitHub Pages
-
 ## 📄 License
 
 MIT License
 
 ---
 
-*VirtualCell — 定义虚拟细胞的评估标准*
+*VirtualCell v0.4.0 — 定义虚拟细胞的评估标准*
 *MoKangMedical | 2026*

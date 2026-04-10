@@ -15,7 +15,7 @@ def test_api_health_endpoint():
     from virtual_cell import __version__
     from virtual_cell.registry import ModelRegistry, DatasetRegistry
     
-    assert __version__ == "0.3.0"
+    assert __version__ == "0.4.0"
     assert len(ModelRegistry.list()) == 15
     assert len(DatasetRegistry.list()) == 26
     print("✅ API health端点逻辑")

@@ -148,7 +148,7 @@ class VCCPipeline:
             "team": "VirtualCell-OPC",
             "model": model_name,
             "metrics": metrics.to_dict(),
-            "platform": "VirtualCell v0.3.0",
+            "platform": "VirtualCell v0.4.0",
         }
 
     def save_submission(self, submission: dict, output_path: str):
