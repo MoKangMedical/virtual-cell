@@ -1,8 +1,18 @@
 """Lingshu-Cell 完整架构测试。"""
+import importlib.util
 import sys
+
 import numpy as np
+import pytest
 
 sys.path.insert(0, '/root/virtual-cell')
+
+
+TORCH_AVAILABLE = importlib.util.find_spec("torch") is not None
+requires_torch = pytest.mark.skipif(
+    not TORCH_AVAILABLE,
+    reason="torch optional dependency not installed",
+)
 
 
 def test_quantizer_encode_decode():
@@ -50,6 +60,7 @@ def test_quantizer_encode_decode():
     print("✅ Quantizer roundtrip: 100随机值")
 
 
+@requires_torch
 def test_rmsnorm():
     """RMSNorm层。"""
     import torch
@@ -62,6 +73,7 @@ def test_rmsnorm():
     print("✅ RMSNorm")
 
 
+@requires_torch
 def test_swiglu():
     """SwiGLU FFN。"""
     import torch
@@ -74,6 +86,7 @@ def test_swiglu():
     print("✅ SwiGLU")
 
 
+@requires_torch
 def test_attention():
     """Multi-Head Attention + RoPE。"""
     import torch
@@ -92,6 +105,7 @@ def test_attention():
     print("✅ Multi-Head Attention + RoPE")
 
 
+@requires_torch
 def test_transformer_block():
     """Transformer Block。"""
     import torch
@@ -104,6 +118,7 @@ def test_transformer_block():
     print("✅ Transformer Block")
 
 
+@requires_torch
 def test_sequence_compressor():
     """序列压缩/解压。"""
     import torch
@@ -119,6 +134,7 @@ def test_sequence_compressor():
     print("✅ Sequence Compressor")
 
 
+@requires_torch
 def test_lingshu_cell_forward():
     """LingshuCell前向传播。"""
     import torch
@@ -145,6 +161,7 @@ def test_lingshu_cell_forward():
     print("✅ LingshuCell forward (有条件)")
 
 
+@requires_torch
 def test_lingshu_cell_loss():
     """MDDM训练损失。"""
     import torch
@@ -170,6 +187,7 @@ def test_lingshu_cell_loss():
     print(f"✅ LingshuCell loss (有条件): {loss_cond.item():.4f}")
 
 
+@requires_torch
 def test_lingshu_cell_sample():
     """采样生成（小规模）。"""
     import torch
@@ -195,6 +213,7 @@ def test_lingshu_cell_sample():
     print(f"✅ LingshuCell sample (prior): {generated_prior[:, :3]}")
 
 
+@requires_torch
 def test_lingshu_cell_perturbation():
     """扰动预测。"""
     import torch
@@ -220,6 +239,7 @@ def test_lingshu_cell_perturbation():
     print(f"✅ LingshuCell perturbation prediction: gen1={gen1[0,:5].tolist()}, gen2={gen2[0,:5].tolist()}")
 
 
+@requires_torch
 def test_trainer():
     """训练器单步。"""
     import torch
