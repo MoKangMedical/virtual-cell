@@ -1,6 +1,6 @@
 [project]
 name = "virtual-cell"
-version = "0.1.0"
+version = "0.4.0"
 description = "单细胞基础模型Benchmark平台 — 14个模型×26个数据集×4大任务"
 readme = "README.md"
 license = {text = "MIT"}
