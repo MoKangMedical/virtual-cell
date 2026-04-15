@@ -10,11 +10,31 @@ import time
 from dataclasses import dataclass, field
 from typing import Any, Optional
 
-from .models.base import BaseModel, get_model_info, list_models
+from .models.base import BaseModel, get_model_info, list_models, get_all_model_keys
 from .models import create_model
-from .datasets.base import BaseDataset, get_dataset_info, list_datasets
+from .datasets.base import BaseDataset, get_dataset_info, list_datasets, DATASETS_INFO
 from .datasets import create_dataset
-from .tasks import get_task, list_tasks, TaskResult
+from .tasks import get_task, list_tasks, TaskResult, TASK_REGISTRY
+
+
+def _validate_task_dataset_compat(tasks: list[str], datasets: list[str]) -> list[str]:
+    """校验任务-数据集兼容性，返回警告列表（空=全部兼容）。"""
+    warnings = []
+    for ds_name in datasets:
+        ds_info = DATASETS_INFO.get(ds_name.lower())
+        if ds_info is None:
+            warnings.append(f"未知数据集: {ds_name}")
+            continue
+        for task_name in tasks:
+            if task_name not in TASK_REGISTRY:
+                warnings.append(f"未知任务: {task_name}")
+                continue
+            if task_name not in ds_info.supported_tasks:
+                warnings.append(
+                    f"⚠️ {ds_name} 不支持 {task_name} 任务 "
+                    f"(支持: {', '.join(ds_info.supported_tasks)})"
+                )
+    return warnings
 
 
 @dataclass
@@ -106,6 +126,12 @@ class Benchmark:
         Returns:
             BenchmarkResult。
         """
+        # 校验任务-数据集兼容性
+        compat_warnings = _validate_task_dataset_compat(tasks, datasets)
+        if compat_warnings:
+            for w in compat_warnings:
+                print(w)
+
         start = time.time()
         results = []
 
