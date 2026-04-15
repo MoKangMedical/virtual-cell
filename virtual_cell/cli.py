@@ -39,6 +39,7 @@ def main():
     run_parser.add_argument("--max-genes", type=int, default=500, help="最大基因数")
     run_parser.add_argument("--output", "-o", default="", help="输出报告路径")
     run_parser.add_argument("--format", "-f", choices=["md", "json", "both"], default="both", help="报告格式")
+    run_parser.add_argument("--dry-run", action="store_true", default=False, help="预览将要执行的操作，不实际运行")
 
     # info 子命令
     info_parser = sub.add_parser("info", help="查看模型详情")
@@ -64,6 +65,7 @@ def main():
     compare_parser.add_argument("--tasks", "-t", default="cell_annotation,perturbation,integration,grn", help="任务列表(逗号分隔)")
     compare_parser.add_argument("--max-cells", type=int, default=500, help="最大细胞数")
     compare_parser.add_argument("--output", "-o", default="comparison.html", help="输出HTML路径")
+    compare_parser.add_argument("--dry-run", action="store_true", default=False, help="预览将要执行的操作，不实际运行")
 
     # generate 子命令
     gen_parser = sub.add_parser("generate", help="生成架构并自动评估 (CellForge)")
@@ -72,6 +74,7 @@ def main():
     gen_parser.add_argument("--n", "-n", type=int, default=3, help="生成候选数")
     gen_parser.add_argument("--max-cells", type=int, default=500, help="最大细胞数")
     gen_parser.add_argument("--output", "-o", default="cellforge_report", help="输出文件前缀")
+    gen_parser.add_argument("--dry-run", action="store_true", default=False, help="预览将要执行的操作，不实际运行")
 
     args = parser.parse_args()
 
@@ -120,6 +123,35 @@ def _cmd_list(what: str):
             print(f"  {t['key']:25s} → {', '.join(t['metrics'])}")
 
 
+def _validate_inputs(models: list[str], datasets: list[str], tasks: list[str]) -> bool:
+    """校验模型/数据集/任务名称是否有效，无效时打印错误并返回False。"""
+    from .registry import ModelRegistry, DatasetRegistry
+    from .tasks import list_tasks
+
+    valid = True
+    known_models = {m["key"] for m in ModelRegistry.list()}
+    known_datasets = {d["key"] for d in DatasetRegistry.list()}
+    known_tasks = {t["key"] for t in list_tasks()}
+
+    bad_models = [m for m in models if m not in known_models]
+    bad_datasets = [d for d in datasets if d not in known_datasets]
+    bad_tasks = [t for t in tasks if t not in known_tasks]
+
+    if bad_models:
+        print(f"❌ 未知模型: {', '.join(bad_models)}")
+        print(f"   可用模型: {', '.join(sorted(known_models))}")
+        valid = False
+    if bad_datasets:
+        print(f"❌ 未知数据集: {', '.join(bad_datasets)}")
+        print(f"   可用数据集: {', '.join(sorted(known_datasets))}")
+        valid = False
+    if bad_tasks:
+        print(f"❌ 未知任务: {', '.join(bad_tasks)}")
+        print(f"   可用任务: {', '.join(sorted(known_tasks))}")
+        valid = False
+    return valid
+
+
 def _cmd_run(args):
     from .benchmark import Benchmark
     from .report import BenchmarkReport
@@ -128,10 +160,19 @@ def _cmd_run(args):
     datasets = [d.strip() for d in args.datasets.split(",")]
     tasks = [t.strip() for t in args.tasks.split(",")]
 
+    if not _validate_inputs(models, datasets, tasks):
+        sys.exit(1)
+
     print(f"\n🔬 VirtualCell Benchmark")
     print(f"   模型: {', '.join(models)}")
     print(f"   数据集: {', '.join(datasets)}")
     print(f"   任务: {', '.join(tasks)}")
+    print(f"   Max Cells: {args.max_cells}  Max Genes: {args.max_genes}")
+    print(f"   输出格式: {args.format}  输出路径: {args.output or 'benchmark'}")
+    print(f"   总评估次数: {len(models) * len(datasets) * len(tasks)}")
+    if getattr(args, 'dry_run', False):
+        print("\n✅ Dry-run 模式 — 未实际执行。")
+        return
     print()
 
     bench = Benchmark()
@@ -248,6 +289,9 @@ def _cmd_report(args):
     datasets = [d.strip() for d in args.datasets.split(",")]
     tasks = [t.strip() for t in args.tasks.split(",")]
 
+    if not _validate_inputs(models, datasets, tasks):
+        sys.exit(1)
+
     print(f"\n🔬 运行Benchmark并生成HTML报告...")
     bench = Benchmark()
     result = bench.run(
@@ -277,7 +321,19 @@ def _cmd_compare(args):
     datasets = [d.strip() for d in args.datasets.split(",")]
     tasks = [t.strip() for t in args.tasks.split(",")]
 
-    print(f"\n⚔️ 对比 {args.model1} vs {args.model2} ...")
+    if not _validate_inputs(models, datasets, tasks):
+        sys.exit(1)
+
+    print(f"\n⚔️ 对比 {args.model1} vs {args.model2}")
+    print(f"   数据集: {', '.join(datasets)}")
+    print(f"   任务: {', '.join(tasks)}")
+    print(f"   Max Cells: {args.max_cells}")
+    print(f"   输出: {args.output}")
+    print(f"   总评估次数: {2 * len(datasets) * len(tasks)}")
+    if getattr(args, 'dry_run', False):
+        print("\n✅ Dry-run 模式 — 未实际执行。")
+        return
+    print()
     bench = Benchmark()
     result = bench.run(
         models=models, datasets=datasets, tasks=tasks,
@@ -295,10 +351,18 @@ def _cmd_generate(args):
     from .benchmark import Benchmark
     from .visualizer import Visualizer
 
+    if not _validate_inputs([], [args.dataset], [args.task]):
+        sys.exit(1)
+
     print(f"\n🧬 CellForge 架构生成")
     print(f"   任务: {args.task}")
     print(f"   数据集: {args.dataset}")
     print(f"   生成候选: {args.n}")
+    print(f"   Max Cells: {args.max_cells}")
+    print(f"   输出: {args.output}")
+    if getattr(args, 'dry_run', False):
+        print("\n✅ Dry-run 模式 — 未实际执行。")
+        return
     print()
 
     bench = Benchmark()

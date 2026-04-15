@@ -1,0 +1,26 @@
+{
+  "n_results": 1,
+  "results": [
+    {
+      "task": "cell_annotation",
+      "model": "scGPT",
+      "dataset": "Zheng68K",
+      "metrics": {
+        "accuracy": 0.87,
+        "f1_macro": 0.8699045031616072,
+        "f1_weighted": 0.8704050701094854
+      },
+      "metadata": {
+        "n_cells": 500,
+        "n_types": 10
+      }
+    }
+  ],
+  "execution_time_ms": 95.24273872375488,
+  "metadata": {
+    "n_models": 1,
+    "n_datasets": 1,
+    "n_tasks": 1,
+    "total_evaluations": 1
+  }
+}
