@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>🔬 VirtualCell v0.4.1 — Benchmark Leaderboard</title>
+<title>🔬 VirtualCell v0.5.0 — Benchmark Leaderboard</title>
     <meta name="description" content="AI驱动的单细胞模拟与药物靶点发现平台">
     <meta property="og:title" content="Virtual Cell 虚拟细胞">
     <meta property="og:description" content="AI驱动的单细胞模拟与药物靶点发现平台">
@@ -80,8 +80,8 @@ footer{text-align:center;color:#475569;margin-top:2rem;padding:1rem;font-size:.8
 <body>
 <div class="container">
 <header>
-  <h1>🔬 VirtualCell v0.4.1 — Benchmark Leaderboard</h1>
-  <p class="subtitle">14 Models × 26 Datasets × 4 Tasks = Unified Evaluation Framework</p>
+  <h1>🔬 VirtualCell v0.5.0 — Benchmark Leaderboard</h1>
+  <p class="subtitle">15 Models × 26 Datasets × 4 Tasks × 免费资源指南 = 虚拟细胞统一评估框架</p>
 </header>
 
 <div class="stats" id="statsRow"></div>
@@ -106,8 +106,33 @@ footer{text-align:center;color:#475569;margin-top:2rem;padding:1rem;font-size:.8
   <canvas id="heatmapCanvas" height="400"></canvas>
 </div>
 
+<div class="card">
+  <h2>🆓 免费资源 — 医学研究者零成本上车</h2>
+  <p style="color:var(--text2);margin-bottom:1rem;">虚拟细胞火得一塌糊涂（Cell封面、西湖大学、扎克伯格砸钱），但你一没算力二没数据？照样上车。</p>
+  <div style="display:grid;grid-template-columns:1fr 1fr;gap:1rem;margin-bottom:1.2rem;">
+    <div style="background:var(--bg3);border-radius:10px;padding:1.2rem;">
+      <h3 style="color:var(--accent);margin-bottom:.5rem;">📦 CZI CELLxGENE</h3>
+      <p style="color:var(--text2);font-size:.85rem;">4400万+ 人类单细胞数据<br>机构邮箱注册即用，无需测序<br><a href="https://cellxgene.cziscience.com/" style="color:var(--accent);" target="_blank">cellxgene.cziscience.com →</a></p>
+    </div>
+    <div style="background:var(--bg3);border-radius:10px;padding:1.2rem;">
+      <h3 style="color:var(--accent);margin-bottom:.5rem;">📦 Arc Virtual Cell Atlas</h3>
+      <p style="color:var(--text2);font-size:.85rem;">1亿单细胞 × 1100+ 药物反应<br>AI预测药物对特定细胞的效果<br><a href="https://virtualcellatlas.arcinstitute.org/" style="color:var(--accent);" target="_blank">virtualcellatlas.arcinstitute.org →</a></p>
+    </div>
+  </div>
+  <h3 style="margin-bottom:.8rem;">🧪 三大上车方向</h3>
+  <table class="lb">
+    <thead><tr><th>方向</th><th>操作</th><th>价值</th></tr></thead>
+    <tbody>
+      <tr><td style="color:var(--yellow);font-weight:600;">💰 基金申请</td><td>标书加"虚拟细胞预测+实验验证"模块</td><td>创新性直接拉满</td></tr>
+      <tr><td style="color:var(--green);font-weight:600;">💊 药物筛选</td><td>先虚拟筛选 Top 5-10 候选，再湿实验验证</td><td>省时省钱 80%+</td></tr>
+      <tr><td style="color:var(--purple);font-weight:600;">🎯 靶点发现</td><td>Geneformer/scGPT + GRN 推断挖掘新靶点</td><td>直接用于 SCI 论文</td></tr>
+    </tbody>
+  </table>
+  <p style="margin-top:1rem;color:var(--text2);font-size:.85rem;">👉 详细指南：<a href="https://github.com/MoKangMedical/virtual-cell/blob/main/docs/free-resources-guide.md" style="color:var(--accent);" target="_blank">free-resources-guide.md</a></p>
 </div>
-<footer>VirtualCell v0.4.1 — Benchmark — MoKangMedical | 2026</footer>
+
+</div>
+<footer>VirtualCell v0.5.0 — Benchmark — MoKangMedical | 2026</footer>
 
 <script>
 // ===== Embedded Benchmark Data =====

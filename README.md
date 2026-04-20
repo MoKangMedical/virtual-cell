@@ -1,4 +1,4 @@
-# 🔬 VirtualCell v0.4.0 — 单细胞基础模型Benchmark平台
+# 🔬 VirtualCell v0.5.0 — 单细胞基础模型Benchmark平台
 
 **15个模型 × 26个数据集 × 4大任务 × CellForge自动架构设计 = 虚拟细胞的统一评估框架**
 
@@ -336,6 +336,25 @@ python3 examples/cellforge_demo.py
 | 架构自动生成 | ✅ 🆕 | ❌ | ❌ | ❌ |
 | REST API | ✅ 🆕 | ❌ | ❌ | ❌ |
 | VCC Pipeline | ✅ 🆕 | ❌ | ❌ | ❌ |
+
+## 🆓 免费资源 — 医学研究者上车手册
+
+> 你一没算力二没数据？照样上车，而且不花钱。
+
+### 两大免费数据平台
+
+| 资源 | 数据量 | 核心价值 |
+|------|--------|---------|
+| **[CZI CELLxGENE](https://cellxgene.cziscience.com/)** | 4400万+ 人类单细胞 | 机构邮箱注册即可下载，无需测序 |
+| **[Arc Virtual Cell Atlas](https://virtualcellatlas.arcinstitute.org/)** | 1亿单细胞 × 1100+ 药物 | AI预测药物对特定细胞的效果 |
+
+### 三大上车方向
+
+1. **💰 基金申请** — 标书加"虚拟细胞预测+实验验证"模块，创新性拉满
+2. **💊 药物筛选** — 先虚拟筛选候选，再湿实验验证，省时省钱80%+
+3. **🎯 靶点发现** — 用 Geneformer/scGPT + GRN 推断从公共数据挖掘新靶点
+
+👉 **详细指南：** [docs/free-resources-guide.md](docs/free-resources-guide.md)
 
 ## 🗺️ Roadmap
 
