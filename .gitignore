@@ -9,3 +9,16 @@ build/
 data/
 /tmp/
 test_gen_report_*.html
+
+# Data directories
+_data/
+
+# Logs
+*.log
+
+# Cache
+.cache/
+
+# Environment
+.env
+.env.local
