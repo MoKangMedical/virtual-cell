@@ -1,0 +1,11 @@
+# 这是CODEOWNERS文件
+# 了解更多: https://docs.github.com/en/repositories/managing-your-repositorys-settings-and-features/customizing-your-repository/about-code-owners
+
+# 默认所有者
+* @MoKangMedical
+
+# 特定目录的所有者
+# /src/ @特定用户
+# /docs/ @文档团队
+# *.js @JavaScript团队
+# *.py @Python团队
