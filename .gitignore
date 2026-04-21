@@ -22,3 +22,7 @@ _data/
 # Environment
 .env
 .env.local
+*.key
+*.pem
+*_secret*
+credentials.json
