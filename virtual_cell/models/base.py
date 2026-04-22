@@ -30,6 +30,7 @@ class ModelArchitecture(Enum):
     GNN_TRANSFORMER = "gnn_transformer"  # GEARS
     PREFIX_LM = "prefix_lm"           # CellPLM
     PRINT = "print"                   # scPRINT
+    DIFFUSION = "diffusion"            # Squidiff, scDiffusion
 
 
 @dataclass
@@ -225,6 +226,27 @@ SCPRINT_INFO = ModelInfo(
     year=2024,
 )
 
+SQUIDIFF_INFO = ModelInfo(
+    name="Squidiff",
+    architecture=ModelArchitecture.DIFFUSION,
+    pretrain_cells=0,
+    pretrain_data="多组织scRNA-seq（细胞分化/基因扰动/药物响应/类器官）",
+    parameters="~50M",
+    paper="https://www.nature.com/articles/s41592-025-02877-y",
+    code_repo="https://github.com/siyuh/Squidiff",
+    supported_tasks=["perturbation", "drug_response", "differentiation", "organoid_development"],
+    strengths=[
+        "扩散模型生成框架，连续去噪+语义特征集成",
+        "预测多种细胞类型在不同刺激下的转录组变化",
+        "支持细胞分化、基因扰动、药物响应、类器官发育、辐照/生长因子响应",
+        "in silico筛选分子景观和细胞状态转变",
+        "Nature Methods 2026年1月封面文章",
+    ],
+    weaknesses=["非通用注释模型", "主要针对扰动/响应预测"],
+    license="MIT",
+    year=2025,
+)
+
 LINGSHU_CELL_INFO = ModelInfo(
     name="Lingshu-Cell",
     architecture=ModelArchitecture.HYBRID,
@@ -255,6 +277,7 @@ MODELS_INFO = {
     "regformer": REGFORMER_INFO,
     "nicheformer": NICHEFORMER_INFO,
     "scprint": SCPRINT_INFO,
+    "squidiff": SQUIDIFF_INFO,
     "lingshu": LINGSHU_CELL_INFO,
     "celllm": ModelInfo("CellLM", ModelArchitecture.BERT_ENCODER, 5_000_000, "多数据集", "~80M", "", "", ["cell_annotation"], ["通用细胞理解"], ["需更多验证"], "MIT", 2024),
     "cellplm": ModelInfo("CellPLM", ModelArchitecture.PREFIX_LM, 3_000_000, "多组学", "~60M", "", "", ["cell_annotation", "perturbation"], ["前缀注意力"], ["较新"], "MIT", 2024),

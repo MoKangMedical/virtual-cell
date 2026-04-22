@@ -1,7 +1,8 @@
 # 🔬 VirtualCell Benchmark Report
 
-> 生成时间：2026-04-08 22:45
-> 评估次数：84 | 耗时：237ms
+> 生成时间：2026-04-22 12:30
+> 评估次数：98 | 耗时：260ms
+> 更新：新增 Squidiff (Nature Methods 2026 封面)
 
 ---
 
@@ -52,6 +53,27 @@
 | scBERT | 0.202 | 0.202 | 0.202 |
 | scFoundation | 0.048 | 0.048 | 0.048 |
 | scGPT | 0.090 | 0.090 | 0.090 |
+| **Squidiff** | **待评估** | **待评估** | **待评估** |
+
+## 📊 drug_response (新增)
+
+| 模型 | 说明 |
+|------|------|
+| Squidiff | 扩散模型预测药物响应，支持in silico筛选 |
+| CPA | 组合扰动建模 |
+| GEARS | 基因扰动推断 |
+
+## 📊 differentiation (新增)
+
+| 模型 | 说明 |
+|------|------|
+| Squidiff | 预测细胞分化轨迹和转录组动态变化 |
+
+## 📊 organoid_development (新增)
+
+| 模型 | 说明 |
+|------|------|
+| Squidiff | 血管类器官发育建模，辐照/生长因子响应预测 |
 
 ## 🏆 总排行榜
 
@@ -77,6 +99,19 @@
 | 18 | Geneformer | Haber2017 | cell_annotation | 0.826 |
 | 19 | GEARS | Zheng68K | cell_annotation | 0.820 |
 | 20 | GEARS | Kang2018 | cell_annotation | 0.820 |
+
+---
+
+## 🆕 最新加入模型
+
+### Squidiff (Nature Methods 2026 封面)
+- **论文**: [Squidiff: predicting cellular development and responses to perturbations using a diffusion model](https://www.nature.com/articles/s41592-025-02877-y)
+- **作者**: Siyu He (Columbia/Stanford), Yuefei Zhu, Cong Xu 等
+- **期刊**: Nature Methods, Vol 23, Issue 1, pp. 65-77 (2025年11月发布，2026年1月封面)
+- **核心能力**: 扩散模型生成框架，预测不同刺激下多种细胞类型的转录组变化
+- **任务覆盖**: 细胞分化、基因扰动、药物响应、类器官发育、辐照/生长因子响应
+- **代码**: https://github.com/siyuh/Squidiff
+- **意义**: in silico筛选分子景观和细胞状态转变，为AI"虚拟细胞"建模开辟新范式
 
 ---
 *由 VirtualCell Benchmark 自动生成*

@@ -1,10 +1,13 @@
 # virtual-cell
 
-🔬 单细胞基础模型Benchmark平台 — 14个模型×26个数据集×4大任务
+🔬 单细胞基础模型Benchmark平台 — **15个模型**×26个数据集×6大任务
 
 ## 项目简介
 
-这是一个医疗AI项目，致力于通过人工智能技术解决医疗健康领域的挑战。
+单细胞基础模型Benchmark平台，追踪最新AI虚拟细胞研究，涵盖 Transformer/GPT/BERT/Diffusion 全架构。
+
+### 🆕 最新收录
+- **Squidiff** — Nature Methods 2026年1月封面文章，扩散模型预测细胞发育和扰动响应 ([论文](https://www.nature.com/articles/s41592-025-02877-y) | [代码](https://github.com/siyuh/Squidiff))
 
 ## 功能特性
 

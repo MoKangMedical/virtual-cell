@@ -214,6 +214,22 @@ class LingshuCellModel(MockModel):
         return result
 
 
+class SquidiffModel(MockModel):
+    """Squidiff — 扩散模型预测细胞发育和扰动响应 (Nature Methods 2026封面)"""
+
+    def __init__(self):
+        super().__init__(MODELS_INFO["squidiff"])
+
+    def predict(self, data: Any, task: str, **kwargs) -> PredictionResult:
+        result = super().predict(data, task, **kwargs)
+        result.metadata["model_type"] = "diffusion"
+        result.metadata["capabilities"] = [
+            "cell_differentiation", "gene_perturbation", "drug_response",
+            "organoid_development", "irradiation_response", "growth_factor_response"
+        ]
+        return result
+
+
 MODEL_CLASSES = {
     "scgpt": ScGPTModel,
     "geneformer": GeneformerModel,
@@ -230,6 +246,7 @@ MODEL_CLASSES = {
     "cpa": CPAModel,
     "gears": GEARSModel,
     "xtrimosc": XTrimoSCPerturbModel,
+    "squidiff": SquidiffModel,
 }
 
 
