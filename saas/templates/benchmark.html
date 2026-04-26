@@ -194,6 +194,16 @@ select,input{width:100%;padding:10px;border:1px solid #ddd;border-radius:8px;mar
     <div style="font-size:12px;color:#888">本月已用 2/5 · 升级学术Pro解锁无限运行</div>
     <button class="btn indigo" style="margin-top:8px" onclick="alert('升级学术Pro：¥200/月')">升级 Pro</button>
   </div>
+
+  <div class="card">
+    <h3>👤 注册/登录</h3>
+    <p style="font-size:12px;color:#888;margin-bottom:8px">注册后可保存Benchmark结果+对比历史</p>
+    <label>邮箱</label><input id="vcEmail" placeholder="your@email.com">
+    <label>机构</label><input id="vcOrg" placeholder="学校/公司名称">
+    <button class="btn indigo" onclick="registerVC()" style="width:100%">注册免费账号</button>
+    <div style="font-size:11px;color:#888;text-align:center;margin-top:6px">已有账号？<a href="#" onclick="alert('登录功能开发中')" style="color:#5c6bc0">登录</a></div>
+  </div>
+  </div>
 </div>
 
 <script>
@@ -215,6 +225,16 @@ function toggleTask(el,name){
   el.classList.toggle('selected');
   if(selectedTasks.has(name))selectedTasks.delete(name);else selectedTasks.add(name);
 }
+function registerVC(){
+  const email=document.getElementById("vcEmail").value;
+  const org=document.getElementById("vcOrg").value;
+  if(!email||!org){alert("请填写完整信息");return;}
+  fetch("/api/register",{method:"POST",headers:{"Content-Type":"application/json"},body:JSON.stringify({email,org})})
+  .then(r=>r.json()).then(d=>{
+    alert("✅ 注册成功！\n邮箱："+d.email+"\n机构："+d.org+"\n方案：学术免费版\n每月5次Benchmark运行");
+  });
+}
+
 function runBenchmark(){
   if(selectedModels.size===0||selectedTasks.size===0){alert('请至少选择1个模型和1个任务');return;}
   document.getElementById('progressCard').style.display='block';

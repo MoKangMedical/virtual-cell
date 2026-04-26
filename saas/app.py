@@ -186,5 +186,15 @@ def api_stats():
 def benchmark():
     return render_template("benchmark.html")
 
+@app.route("/api/register", methods=["POST"])
+def api_register():
+    data = request.json
+    db = get_db()
+    uid = f"VC{int(time.time())}"
+    db["users"][uid] = {"email": data.get("email"), "org": data.get("org"), "plan": "free", "created": datetime.now().isoformat()}
+    commit()
+    return jsonify({"id": uid, "email": data.get("email"), "org": data.get("org"), "plan": "学术免费版"})
+
+
 if __name__ == "__main__":
     app.run(host="0.0.0.0", port=5008, debug=True)
