@@ -44,9 +44,19 @@ select,input{width:100%;padding:10px;border:1px solid #ddd;border-radius:8px;mar
 </div>
 
 <div class="wrap">
-  <!-- 选择模型 -->
+  <!-- 选择模型类别 -->
   <div class="card">
-    <h3>🤖 选择模型</h3>
+    <h3>🤖 选择模型类别</h3>
+    <div style="display:flex;gap:8px;margin-bottom:10px">
+      <button class="btn indigo" onclick="showModelCat('singlecell')" id="btn-singlecell">🧬 单细胞模型</button>
+      <button class="btn outline" onclick="showModelCat('medllm')" id="btn-medllm">🏥 医疗LLM</button>
+      <button class="btn outline" onclick="showModelCat('medmllm')" id="btn-medmllm">🩺 多模态LLM</button>
+    </div>
+  </div>
+
+  <!-- 单细胞模型 -->
+  <div class="card" id="cat-singlecell">
+    <h3>🧬 单细胞基础模型</h3>
     <div class="grid" id="modelGrid">
       <div class="model-card selected" onclick="toggleModel(this,'scGPT')"><div class="name">scGPT</div><div class="info">Transformer · 100M</div></div>
       <div class="model-card" onclick="toggleModel(this,'Geneformer')"><div class="name">Geneformer</div><div class="info">Transformer · 10M</div></div>
@@ -56,6 +66,50 @@ select,input{width:100%;padding:10px;border:1px solid #ddd;border-radius:8px;mar
       <div class="model-card" onclick="toggleModel(this,'Nicheformer')"><div class="name">Nicheformer</div><div class="info">Transformer · 80M</div></div>
       <div class="model-card" onclick="toggleModel(this,'scPRINT')"><div class="name">scPRINT</div><div class="info">Transformer · 100M</div></div>
       <div class="model-card" onclick="toggleModel(this,'CellLM')"><div class="name">CellLM</div><div class="info">LM · 50M</div></div>
+    </div>
+  </div>
+
+  <!-- 医疗LLM -->
+  <div class="card" id="cat-medllm" style="display:none">
+    <h3>🏥 医疗大语言模型（20个）· 基于 Awesome-AI4Med</h3>
+    <div class="grid">
+      <div class="model-card" onclick="toggleModel(this,'HuatuoGPT-o1')"><div class="name">HuatuoGPT-o1</div><div class="info">70B · 推理链</div></div>
+      <div class="model-card" onclick="toggleModel(this,'HuatuoGPT-II')"><div class="name">HuatuoGPT-II</div><div class="info">34B · 中文</div></div>
+      <div class="model-card" onclick="toggleModel(this,'Apollo')"><div class="name">Apollo</div><div class="info">72B · 多尺度</div></div>
+      <div class="model-card" onclick="toggleModel(this,'UltraMedical')"><div class="name">UltraMedical</div><div class="info">70B · 清华</div></div>
+      <div class="model-card" onclick="toggleModel(this,'MedReason')"><div class="name">MedReason</div><div class="info">8B · 推理</div></div>
+      <div class="model-card" onclick="toggleModel(this,'MedGemma')"><div class="name">MedGemma</div><div class="info">27B · Google</div></div>
+      <div class="model-card" onclick="toggleModel(this,'Baichuan-M2')"><div class="name">Baichuan-M2</div><div class="info">32B · 中文</div></div>
+      <div class="model-card" onclick="toggleModel(this,'BioMistral')"><div class="name">BioMistral</div><div class="info">7B · 生物</div></div>
+      <div class="model-card" onclick="toggleModel(this,'MediTron')"><div class="name">MediTron</div><div class="info">70B · EPFL</div></div>
+      <div class="model-card" onclick="toggleModel(this,'Fleming-R1')"><div class="name">Fleming-R1</div><div class="info">32B · 推理</div></div>
+      <div class="model-card" onclick="toggleModel(this,'Med42-v2')"><div class="name">Med42-v2</div><div class="info">70B · M42</div></div>
+      <div class="model-card" onclick="toggleModel(this,'OpenBioLLM')"><div class="name">OpenBioLLM</div><div class="info">70B · 开源</div></div>
+      <div class="model-card" onclick="toggleModel(this,'PMC-LLaMA')"><div class="name">PMC-LLaMA</div><div class="info">13B · PMC</div></div>
+      <div class="model-card" onclick="toggleModel(this,'BioMedGPT')"><div class="name">BioMedGPT</div><div class="info">7B · 综合</div></div>
+      <div class="model-card" onclick="toggleModel(this,'AlphaMed')"><div class="name">AlphaMed</div><div class="info">8B · RL优化</div></div>
+      <div class="model-card" onclick="toggleModel(this,'Fleming-VL')"><div class="name">Fleming-VL</div><div class="info">38B · 视觉</div></div>
+      <div class="model-card" onclick="toggleModel(this,'MediX-R1')"><div class="name">MediX-R1</div><div class="info">30B · 推理</div></div>
+      <div class="model-card" onclick="toggleModel(this,'Chiron-o1')"><div class="name">Chiron-o1</div><div class="info">8B · 思维链</div></div>
+      <div class="model-card" onclick="toggleModel(this,'Baichuan-M3')"><div class="name">Baichuan-M3</div><div class="info">235B · 超大</div></div>
+      <div class="model-card" onclick="toggleModel(this,'QoQ-Med')"><div class="name">QoQ-Med</div><div class="info">32B · VL</div></div>
+    </div>
+  </div>
+
+  <!-- 医疗多模态LLM -->
+  <div class="card" id="cat-medmllm" style="display:none">
+    <h3>🩺 医疗多模态LLM（22个）· 基于 Awesome-AI4Med</h3>
+    <div class="grid">
+      <div class="model-card" onclick="toggleModel(this,'HuatuoGPT-Vision')"><div class="name">HuatuoGPT-Vision</div><div class="info">34B · 影像</div></div>
+      <div class="model-card" onclick="toggleModel(this,'ShizhenGPT')"><div class="name">ShizhenGPT</div><div class="info">32B · 中医</div></div>
+      <div class="model-card" onclick="toggleModel(this,'LLaVA-Med')"><div class="name">LLaVA-Med</div><div class="info">7B · 微软</div></div>
+      <div class="model-card" onclick="toggleModel(this,'BiMediX2')"><div class="name">BiMediX2</div><div class="info">70B · 双语</div></div>
+      <div class="model-card" onclick="toggleModel(this,'Hulu-Med')"><div class="name">Hulu-Med</div><div class="info">32B · 浙大</div></div>
+      <div class="model-card" onclick="toggleModel(this,'MedGemma-VL')"><div class="name">MedGemma-1.5</div><div class="info">4B · 多模态</div></div>
+      <div class="model-card" onclick="toggleModel(this,'Med-R1')"><div class="name">Med-R1</div><div class="info">2B · 轻量</div></div>
+      <div class="model-card" onclick="toggleModel(this,'MedVLM-R1')"><div class="name">MedVLM-R1</div><div class="info">2B · 视觉</div></div>
+      <div class="model-card" onclick="toggleModel(this,'UniMedVL')"><div class="name">UniMedVL</div><div class="info">14B · 统一</div></div>
+      <div class="model-card" onclick="toggleModel(this,'MedMO')"><div class="name">MedMO</div><div class="info">8B · 多任务</div></div>
     </div>
   </div>
 
@@ -146,6 +200,13 @@ select,input{width:100%;padding:10px;border:1px solid #ddd;border-radius:8px;mar
 const selectedModels=new Set(['scGPT']);
 const selectedTasks=new Set(['cell-annotation']);
 
+function showModelCat(cat){
+  ['singlecell','medllm','medmllm'].forEach(c=>{
+    document.getElementById('cat-'+c).style.display=c===cat?'block':'none';
+    const btn=document.getElementById('btn-'+c);
+    if(c===cat){btn.className='btn indigo'}else{btn.className='btn outline'}
+  });
+}
 function toggleModel(el,name){
   el.classList.toggle('selected');
   if(selectedModels.has(name))selectedModels.delete(name);else selectedModels.add(name);
