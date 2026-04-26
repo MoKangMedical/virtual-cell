@@ -26,3 +26,4 @@ _data/
 *.pem
 *_secret*
 credentials.json
+saas/*.json
