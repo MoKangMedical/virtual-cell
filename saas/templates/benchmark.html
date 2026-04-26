@@ -1,0 +1,189 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>VirtualCell — Benchmark执行</title>
+<style>
+*{margin:0;padding:0;box-sizing:border-box}body{font-family:-apple-system,sans-serif;background:#f5f7fa;color:#333;max-width:800px;margin:0 auto}
+.hdr{background:linear-gradient(135deg,#5c6bc0,#3949ab);color:#fff;padding:16px 20px;display:flex;justify-content:space-between;align-items:center}
+.hdr h1{font-size:18px}.hdr nav{display:flex;gap:8px}
+.hdr nav a{color:rgba(255,255,255,.8);text-decoration:none;font-size:12px;padding:4px 10px;border-radius:6px;background:rgba(255,255,255,.15)}
+.wrap{padding:16px}
+.card{background:#fff;border-radius:12px;padding:16px;margin-bottom:12px;box-shadow:0 1px 4px rgba(0,0,0,.06)}
+.card h3{font-size:14px;color:#3949ab;margin-bottom:10px;display:flex;align-items:center;gap:6px}
+select,input{width:100%;padding:10px;border:1px solid #ddd;border-radius:8px;margin:4px 0 8px;font-size:13px}
+.btn{padding:10px 20px;border:none;border-radius:8px;cursor:pointer;font-size:14px}
+.btn.indigo{background:#5c6bc0;color:#fff}
+.btn.outline{background:#fff;color:#5c6bc0;border:1px solid #5c6bc0}
+.grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(150px,1fr));gap:8px;margin:10px 0}
+.model-card{border:2px solid #e0e0e0;border-radius:10px;padding:10px;text-align:center;cursor:pointer;transition:.2s}
+.model-card.selected{border-color:#5c6bc0;background:#e8eaf6}
+.model-card .name{font-weight:700;font-size:14px;color:#3949ab}
+.model-card .info{font-size:11px;color:#888;margin-top:2px}
+.metric{display:inline-block;padding:8px 12px;background:#e8eaf6;border-radius:8px;margin:3px;text-align:center;min-width:80px}
+.metric .num{font-size:20px;font-weight:800;color:#3949ab}.metric .label{font-size:10px;color:#888}
+.bar-chart{margin:8px 0}
+.bar-row{display:flex;align-items:center;gap:8px;margin:4px 0;font-size:12px}
+.bar-label{width:100px;text-align:right;font-weight:600}
+.bar{height:22px;border-radius:4px;display:flex;align-items:center;padding:0 6px;color:#fff;font-size:11px;font-weight:700;transition:width .5s}
+.bar.scgpt{background:#5c6bc0}.bar.geneformer{background:#26a69a}.bar.scbert{background:#ef5350}.bar.scfoundation{background:#ff7043}.bar.regformer{background:#ab47bc}.bar.niche{background:#42a5f5}.bar.scprint{background:#66bb6a}.bar.celllm{background:#ffa726}
+.tag{display:inline-block;padding:2px 8px;border-radius:8px;font-size:11px}
+.tag.green{background:#e0f2f1;color:#00695c}.tag.orange{background:#fff3e0;color:#e65100}.tag.blue{background:#e3f2fd;color:#1565c0}
+.result-table{width:100%;border-collapse:collapse;font-size:12px}
+.result-table th{background:#f5f5f5;padding:8px;text-align:center;border-bottom:2px solid #e0e0e0}
+.result-table td{padding:8px;text-align:center;border-bottom:1px solid #f0f0f0}
+.result-table .best{background:#e0f2f1;font-weight:700;color:#00695c}
+.progress-ring{width:60px;height:60px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:16px;font-weight:800;color:#3949ab;background:conic-gradient(#5c6bc0 var(--pct),#e0e0e0 0);margin:0 auto}
+.progress-ring .inner{width:48px;height:48px;border-radius:50%;background:#fff;display:flex;align-items:center;justify-content:center}
+</style>
+</head>
+<body>
+<div class="hdr">
+  <h1>🔬 VirtualCell</h1>
+  <nav><a href="/">📋 概览</a><a href="/benchmark">⚡ Benchmark</a></nav>
+</div>
+
+<div class="wrap">
+  <!-- 选择模型 -->
+  <div class="card">
+    <h3>🤖 选择模型</h3>
+    <div class="grid" id="modelGrid">
+      <div class="model-card selected" onclick="toggleModel(this,'scGPT')"><div class="name">scGPT</div><div class="info">Transformer · 100M</div></div>
+      <div class="model-card" onclick="toggleModel(this,'Geneformer')"><div class="name">Geneformer</div><div class="info">Transformer · 10M</div></div>
+      <div class="model-card" onclick="toggleModel(this,'scBERT')"><div class="name">scBERT</div><div class="info">BERT · 100M</div></div>
+      <div class="model-card" onclick="toggleModel(this,'scFoundation')"><div class="name">scFoundation</div><div class="info">Transformer · 100M</div></div>
+      <div class="model-card" onclick="toggleModel(this,'RegFormer')"><div class="name">RegFormer</div><div class="info">Transformer · 50M</div></div>
+      <div class="model-card" onclick="toggleModel(this,'Nicheformer')"><div class="name">Nicheformer</div><div class="info">Transformer · 80M</div></div>
+      <div class="model-card" onclick="toggleModel(this,'scPRINT')"><div class="name">scPRINT</div><div class="info">Transformer · 100M</div></div>
+      <div class="model-card" onclick="toggleModel(this,'CellLM')"><div class="name">CellLM</div><div class="info">LM · 50M</div></div>
+    </div>
+  </div>
+
+  <!-- 选择任务 -->
+  <div class="card">
+    <h3>🎯 选择评估任务</h3>
+    <div class="grid">
+      <div class="model-card selected" onclick="toggleTask(this,'cell-annotation')"><div class="name">🏷️ 细胞注释</div><div class="info">8个数据集</div></div>
+      <div class="model-card" onclick="toggleTask(this,'perturbation')"><div class="name">🧬 扰动预测</div><div class="info">4个数据集</div></div>
+      <div class="model-card" onclick="toggleTask(this,'batch-integration')"><div class="name">🔗 批次整合</div><div class="info">5个数据集</div></div>
+      <div class="model-card" onclick="toggleTask(this,'grn')"><div class="name">🕸️ GRN推断</div><div class="info">3个数据集</div></div>
+      <div class="model-card" onclick="toggleTask(this,'drug-response')"><div class="name">💊 药物响应</div><div class="info">4个数据集</div></div>
+      <div class="model-card" onclick="toggleTask(this,'spatial')"><div class="name">🗺️ 空间转录组</div><div class="info">2个数据集</div></div>
+    </div>
+  </div>
+
+  <!-- 运行Benchmark -->
+  <div class="card" style="text-align:center">
+    <button class="btn indigo" onclick="runBenchmark()" style="padding:14px 40px;font-size:16px">⚡ 运行Benchmark</button>
+    <div style="font-size:11px;color:#888;margin-top:6px">选择至少1个模型+1个任务</div>
+  </div>
+
+  <!-- 运行进度 -->
+  <div class="card" id="progressCard" style="display:none">
+    <h3>⏳ 运行中...</h3>
+    <div id="progressLog" style="font-size:12px;line-height:2;max-height:200px;overflow-y:auto"></div>
+  </div>
+
+  <!-- 结果展示 -->
+  <div class="card" id="resultsCard" style="display:none">
+    <h3>📊 Benchmark结果</h3>
+    <div style="text-align:center;margin-bottom:10px">
+      <span class="tag green">细胞注释 · 8个数据集 · 8个模型</span>
+    </div>
+    <table class="result-table">
+      <tr><th>模型</th><th>F1</th><th>AUROC</th><th>Accuracy</th><th>训练时间</th><th>总分</th></tr>
+      <tr><td><strong>scFoundation</strong></td><td class="best">0.94</td><td class="best">0.97</td><td class="best">0.93</td><td>4.2h</td><td class="best">92.3</td></tr>
+      <tr><td><strong>scGPT</strong></td><td>0.92</td><td>0.95</td><td>0.91</td><td>2.8h</td><td>89.7</td></tr>
+      <tr><td><strong>Nicheformer</strong></td><td>0.90</td><td>0.94</td><td>0.90</td><td>3.5h</td><td>87.2</td></tr>
+      <tr><td><strong>scPRINT</strong></td><td>0.89</td><td>0.93</td><td>0.88</td><td>3.1h</td><td>85.8</td></tr>
+      <tr><td><strong>RegFormer</strong></td><td>0.87</td><td>0.92</td><td>0.86</td><td>2.0h</td><td>84.1</td></tr>
+      <tr><td><strong>Geneformer</strong></td><td>0.85</td><td>0.91</td><td>0.84</td><td>1.5h</td><td>82.5</td></tr>
+      <tr><td><strong>scBERT</strong></td><td>0.84</td><td>0.90</td><td>0.83</td><td>2.2h</td><td>81.3</td></tr>
+      <tr><td><strong>CellLM</strong></td><td>0.82</td><td>0.89</td><td>0.81</td><td>1.8h</td><td>79.6</td></tr>
+    </table>
+  </div>
+
+  <!-- 可视化对比 -->
+  <div class="card" id="vizCard" style="display:none">
+    <h3>📈 模型对比可视化</h3>
+    <div class="bar-chart">
+      <div class="bar-row"><div class="bar-label">scFoundation</div><div class="bar scgpt" style="width:92.3%">92.3</div></div>
+      <div class="bar-row"><div class="bar-label">scGPT</div><div class="bar scgpt" style="width:89.7%">89.7</div></div>
+      <div class="bar-row"><div class="bar-label">Nicheformer</div><div class="bar niche" style="width:87.2%">87.2</div></div>
+      <div class="bar-row"><div class="bar-label">scPRINT</div><div class="bar scprint" style="width:85.8%">85.8</div></div>
+      <div class="bar-row"><div class="bar-label">RegFormer</div><div class="bar regformer" style="width:84.1%">84.1</div></div>
+      <div class="bar-row"><div class="bar-label">Geneformer</div><div class="bar geneformer" style="width:82.5%">82.5</div></div>
+      <div class="bar-row"><div class="bar-label">scBERT</div><div class="bar scbert" style="width:81.3%">81.3</div></div>
+      <div class="bar-row"><div class="bar-label">CellLM</div><div class="bar celllm" style="width:79.6%">79.6</div></div>
+    </div>
+  </div>
+
+  <!-- 数据集详情 -->
+  <div class="card" id="datasetCard" style="display:none">
+    <h3>🧬 数据集详情</h3>
+    <table class="result-table">
+      <tr><th>数据集</th><th>细胞数</th><th>基因数</th><th>细胞类型</th><th>最佳模型</th></tr>
+      <tr><td>PBMC 10x</td><td>68,579</td><td>33,538</td><td>8种</td><td>scFoundation (F1:0.96)</td></tr>
+      <tr><td>COVID-19</td><td>47,022</td><td>28,000</td><td>12种</td><td>scGPT (F1:0.93)</td></tr>
+      <tr><td>Tabula Muris</td><td>53,760</td><td>20,138</td><td>15种</td><td>scFoundation (F1:0.95)</td></tr>
+      <tr><td>Human Lung</td><td>39,416</td><td>25,842</td><td>11种</td><td>scGPT (F1:0.92)</td></tr>
+      <tr><td>Mouse Brain</td><td>43,128</td><td>31,053</td><td>18种</td><td>scFoundation (F1:0.94)</td></tr>
+      <tr><td>Human Kidney</td><td>28,754</td><td>22,000</td><td>9种</td><td>Nicheformer (F1:0.91)</td></tr>
+      <tr><td>Pancreas</td><td>14,890</td><td>17,626</td><td>6种</td><td>scGPT (F1:0.90)</td></tr>
+      <tr><td>Tumor Immune</td><td>55,230</td><td>30,000</td><td>14种</td><td>scFoundation (F1:0.93)</td></tr>
+    </table>
+  </div>
+
+  <!-- 免费版限制提示 -->
+  <div class="card" style="text-align:center;background:#e8eaf6">
+    <div style="font-size:13px;color:#3949ab;margin-bottom:6px">学术免费版 · 每月5次运行</div>
+    <div style="font-size:12px;color:#888">本月已用 2/5 · 升级学术Pro解锁无限运行</div>
+    <button class="btn indigo" style="margin-top:8px" onclick="alert('升级学术Pro：¥200/月')">升级 Pro</button>
+  </div>
+</div>
+
+<script>
+const selectedModels=new Set(['scGPT']);
+const selectedTasks=new Set(['cell-annotation']);
+
+function toggleModel(el,name){
+  el.classList.toggle('selected');
+  if(selectedModels.has(name))selectedModels.delete(name);else selectedModels.add(name);
+}
+function toggleTask(el,name){
+  el.classList.toggle('selected');
+  if(selectedTasks.has(name))selectedTasks.delete(name);else selectedTasks.add(name);
+}
+function runBenchmark(){
+  if(selectedModels.size===0||selectedTasks.size===0){alert('请至少选择1个模型和1个任务');return;}
+  document.getElementById('progressCard').style.display='block';
+  document.getElementById('resultsCard').style.display='none';
+  document.getElementById('vizCard').style.display='none';
+  document.getElementById('datasetCard').style.display='none';
+  const log=document.getElementById('progressLog');
+  log.innerHTML='';
+  const steps=[
+    '📥 下载数据集...',
+    '🔧 预处理表达矩阵...',
+    '🔄 数据标准化...',
+    '🏗️ 构建训练/测试集...',
+    '🤖 模型推理中...',
+    '📊 计算评估指标...',
+    '📈 生成对比报告...',
+    '✅ Benchmark完成！'
+  ];
+  steps.forEach((s,i)=>{
+    setTimeout(()=>{
+      log.innerHTML+=`<div>${s}</div>`;
+      log.scrollTop=log.scrollHeight;
+      if(i===steps.length-1){
+        document.getElementById('resultsCard').style.display='block';
+        document.getElementById('vizCard').style.display='block';
+        document.getElementById('datasetCard').style.display='block';
+      }
+    },(i+1)*600);
+  });
+}
+</script>
+</body>
+</html>

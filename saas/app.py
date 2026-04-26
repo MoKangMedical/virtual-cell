@@ -1,9 +1,9 @@
 """VirtualCell — Benchmark SaaS + 学术合作平台"""
-from flask import Flask, render_template_string, jsonify, request
+from flask import Flask, render_template_string, render_template, jsonify, request
 import json, os, time
 from datetime import datetime
 
-app = Flask(__name__)
+app = Flask(__name__, template_folder="templates")
 DB_FILE = os.path.join(os.path.dirname(__file__), "benchmarks.json")
 
 def load_db():
@@ -79,6 +79,7 @@ input,select{width:100%;padding:8px;border:1px solid #ddd;border-radius:8px;marg
 <div class="hdr">
   <h1>🔬 VirtualCell</h1>
   <p>单细胞基础模型Benchmark平台 · {{ models|length }}个模型 × {{ tasks|length }}大任务</p>
+  <div style="margin-top:8px"><a href="/" style="color:rgba(255,255,255,.8);font-size:12px;text-decoration:none;padding:3px 8px;background:rgba(255,255,255,.15);border-radius:4px;margin:0 4px">📋 概览</a><a href="/benchmark" style="color:rgba(255,255,255,.8);font-size:12px;text-decoration:none;padding:3px 8px;background:rgba(255,255,255,.15);border-radius:4px;margin:0 4px">⚡ Benchmark</a></div>
   <div class="stats">
     <div><div class="num">{{ models|length }}</div><div class="label">模型</div></div>
     <div><div class="num">26</div><div class="label">数据集</div></div>
@@ -180,6 +181,10 @@ def api_benchmark():
 def api_stats():
     db = get_db()
     return jsonify({"users": len(db["users"]), "runs": len(db["runs"]), "revenue": db.get("revenue", 0)})
+
+@app.route("/benchmark")
+def benchmark():
+    return render_template("benchmark.html")
 
 if __name__ == "__main__":
     app.run(host="0.0.0.0", port=5008, debug=True)
