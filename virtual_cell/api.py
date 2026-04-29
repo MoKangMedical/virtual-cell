@@ -19,15 +19,74 @@ VirtualCell REST API
 - GET  /models/{name}/detail 模型详情（含论文/架构/参数量）
 """
 
-from fastapi import FastAPI, HTTPException, Query
-from pydantic import BaseModel, Field
+from __future__ import annotations
+
+import json
+from pathlib import Path
 from typing import Optional
+
+from fastapi import FastAPI, HTTPException
+from pydantic import BaseModel, Field
 
 app = FastAPI(
     title="VirtualCell API",
     version="0.4.0",
     description="单细胞基础模型Benchmark平台API",
 )
+
+
+def _benchmark_snapshot_path() -> Path:
+    """Locate the bundled benchmark snapshot relative to the package root."""
+    return Path(__file__).resolve().parents[1] / "docs" / "benchmark.json"
+
+
+def _leaderboard_entry_from_result(result: dict) -> dict:
+    """Normalize a persisted benchmark result into leaderboard shape."""
+    metrics = result.get("metrics", {}) or {}
+    primary_score = next(
+        (
+            float(value)
+            for value in metrics.values()
+            if isinstance(value, (int, float))
+        ),
+        0.0,
+    )
+    return {
+        "model": result.get("model", ""),
+        "dataset": result.get("dataset", ""),
+        "task": result.get("task", ""),
+        "primary_score": primary_score,
+        "all_metrics": metrics,
+    }
+
+
+def _load_persisted_leaderboard(task: Optional[str] = None) -> list[dict]:
+    """Load leaderboard rows from the bundled benchmark snapshot if present."""
+    snapshot_path = _benchmark_snapshot_path()
+    if not snapshot_path.exists():
+        return []
+
+    with snapshot_path.open() as handle:
+        payload = json.load(handle)
+
+    raw_results: list[dict]
+    if isinstance(payload, dict):
+        raw_results = payload.get("results", []) or []
+    elif isinstance(payload, list):
+        raw_results = payload
+    else:
+        return []
+
+    board = []
+    for result in raw_results:
+        if not isinstance(result, dict):
+            continue
+        if task and result.get("task") != task:
+            continue
+        board.append(_leaderboard_entry_from_result(result))
+
+    board.sort(key=lambda item: -item["primary_score"])
+    return board
 
 
 # ====== Request/Response Models ======
@@ -167,21 +226,7 @@ async def run_benchmark(req: BenchmarkRequest):
 
 @app.get("/leaderboard")
 async def get_leaderboard(task: Optional[str] = None, top_n: int = 20):
-    from virtual_cell.benchmark import Benchmark
-
-    bench = Benchmark()
-
-    import json
-    import os
-
-    bench_file = "/root/virtual-cell/docs/benchmark.json"
-    if os.path.exists(bench_file):
-        with open(bench_file) as f:
-            data = json.load(f)
-            for r in data:
-                pass  # Use existing data
-
-    lb = bench.get_leaderboard(task)
+    lb = _load_persisted_leaderboard(task)
     return {"leaderboard": lb[:top_n], "task": task or "all"}
 
 
